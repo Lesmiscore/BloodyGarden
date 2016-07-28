@@ -17,11 +17,14 @@ import com.nao20010128nao.BloodyGarden.network.Header.PostHeader;
 
 public class Http {
 
-	public CookieManager cookie = null;
+	public static CookieManager cookie;
+	static {
+		cookie = new CookieManager();
+		CookieHandler.setDefault(cookie);
+	}
 
 	public Http() {
-		this.cookie = new CookieManager();
-		CookieHandler.setDefault(this.cookie);
+
 	}
 
 	public String get(String url, GetHeader header) {
@@ -87,7 +90,6 @@ public class Http {
 	public String post(String url, String data, PostHeader header) {
 		String result = "";
 		try {
-			byte[] post_data = data.getBytes("UTF-8");
 			URI uri = new URI(url);
 			HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
 			connection.setDoOutput(true);
@@ -157,7 +159,6 @@ public class Http {
 	public String post_x_www_form_urlencoded(String url, String data, PostHeader header) {
 		String result = "";
 		try {
-			byte[] data_bytes = data.getBytes("UTF-8");
 			URI uri = new URI(url);
 			HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
 			connection.setDoOutput(true);
@@ -230,7 +231,6 @@ public class Http {
 			for (String cdata : data)
 				post_data += "--" + boundary + "\r\n" + cdata + "\r\n";
 
-			byte[] data_bytes = post_data.getBytes("UTF-8");
 			URI uri = new URI(url);
 			HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
 			connection.setDoOutput(true);
