@@ -2,50 +2,50 @@ package com.nao20010128nao.BloodyGarden.network.Header;
 
 public class GetHeader {
 	public String Host = "";
-	public boolean Connection= false;
-	public String Accept= "";
-	public String UserAgent= "";
-	public String Referer= "";
-	public String AcceptEncoding= "";
-	public String AcceptLanguage= "";
-	public String Origin= "";
-	
-	public GetHeader setHost(String host){
+	public boolean Connection = false;
+	public String Accept = "";
+	public String UserAgent = "";
+	public String Referer = "";
+	public String AcceptEncoding = "";
+	public String AcceptLanguage = "";
+	public String Origin = "";
+
+	public GetHeader setHost(String host) {
 		this.Host = host;
 		return this;
 	}
-	
-	public GetHeader setConnection(boolean connection){
+
+	public GetHeader setConnection(boolean connection) {
 		this.Connection = connection;
 		return this;
 	}
-	
-	public GetHeader setAccept(String accept){
+
+	public GetHeader setAccept(String accept) {
 		this.Accept = accept;
 		return this;
 	}
-	
-	public GetHeader setUserAgent(String useragent){
+
+	public GetHeader setUserAgent(String useragent) {
 		this.UserAgent = useragent;
 		return this;
 	}
-	
-	public GetHeader setReferer(String referer){
+
+	public GetHeader setReferer(String referer) {
 		this.Referer = referer;
 		return this;
 	}
-	
-	public GetHeader setAcceptEncoding(String encoding){
+
+	public GetHeader setAcceptEncoding(String encoding) {
 		this.AcceptEncoding = encoding;
 		return this;
 	}
-	
-	public GetHeader setAcceptLanguage(String language){
+
+	public GetHeader setAcceptLanguage(String language) {
 		this.AcceptLanguage = language;
 		return this;
 	}
-	
-	public GetHeader setOrigin(String origin){
+
+	public GetHeader setOrigin(String origin) {
 		this.Origin = origin;
 		return this;
 	}
