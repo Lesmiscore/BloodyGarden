@@ -12,12 +12,15 @@ import com.google.gson.reflect.TypeToken;
 import delion.lobiapi.HttpAPI.Http;
 import delion.lobiapi.HttpAPI.Header.GetHeader;
 import delion.lobiapi.HttpAPI.Header.PostHeader;
+import delion.lobiapi.Json.Bookmarks;
 import delion.lobiapi.Json.Chat;
 import delion.lobiapi.Json.Contacts;
 import delion.lobiapi.Json.Followers;
 import delion.lobiapi.Json.Group;
+import delion.lobiapi.Json.MakePrivateGroupResult;
 import delion.lobiapi.Json.Me;
 import delion.lobiapi.Json.Notifications;
+import delion.lobiapi.Json.Pokes;
 import delion.lobiapi.Json.PrivateGroups;
 import delion.lobiapi.Json.PublicGroups;
 import delion.lobiapi.Json.User;
@@ -318,6 +321,201 @@ public class BasicAPI {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public Pokes getPokes(String groupId, String chatId) {
+		GetHeader header = new GetHeader()
+				.setHost("web.lobi.co")
+				.setConnection(true)
+				.setAccept("application/json, text/plain, */*")
+				.setUserAgent(
+						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+
+		try {
+			return gson.fromJson(
+					this.NetworkAPI.get("https://web.lobi.co/api/group/" + groupId + "/chats/pokes?id=" + chatId,
+							header),
+					Pokes.class);
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public Bookmarks getBookmarks() {
+		GetHeader header = new GetHeader()
+				.setHost("web.lobi.co")
+				.setConnection(true)
+				.setAccept("application/json, text/plain, */*")
+				.setUserAgent(
+						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+
+		try {
+			return gson.fromJson(
+					this.NetworkAPI.get("https://web.lobi.co/api/me/bookmarks", header),
+					Bookmarks.class);
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public void good(String group_id, String chat_id) {
+		PostHeader header = new PostHeader()
+				.setHost("web.lobi.co")
+				.setConnection(true)
+				.setAccept("application/json, text/plain, */*")
+				.setUserAgent(
+						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+
+		String post_data = "id=" + chat_id;
+		this.NetworkAPI.post_x_www_form_urlencoded(
+				"https://web.lobi.co/api/group/" + group_id + "/chats/like", post_data, header);
+	}
+
+	public void unGood(String group_id, String chat_id) {
+		PostHeader header = new PostHeader()
+				.setHost("web.lobi.co")
+				.setConnection(true)
+				.setAccept("application/json, text/plain, */*")
+				.setUserAgent(
+						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+
+		String post_data = "id=" + chat_id;
+		this.NetworkAPI.post_x_www_form_urlencoded(
+				"https://web.lobi.co/api/group/" + group_id + "/chats/unlike", post_data, header);
+	}
+
+	public void bad(String group_id, String chat_id) {
+		PostHeader header = new PostHeader()
+				.setHost("web.lobi.co")
+				.setConnection(true)
+				.setAccept("application/json, text/plain, */*")
+				.setUserAgent(
+						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+
+		String post_data = "id=" + chat_id;
+		this.NetworkAPI.post_x_www_form_urlencoded(
+				"https://web.lobi.co/api/group/" + group_id + "/chats/like", post_data, header);
+	}
+
+	public void unBad(String group_id, String chat_id) {
+		PostHeader header = new PostHeader()
+				.setHost("web.lobi.co")
+				.setConnection(true)
+				.setAccept("application/json, text/plain, */*")
+				.setUserAgent(
+						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+
+		String post_data = "id=" + chat_id;
+		this.NetworkAPI.post_x_www_form_urlencoded(
+				"https://web.lobi.co/api/group/" + group_id + "/chats/unlike", post_data, header);
+	}
+
+	public void follow(String user_id) {
+		PostHeader header = new PostHeader()
+				.setHost("web.lobi.co")
+				.setConnection(true)
+				.setAccept("application/json, text/plain, */*")
+				.setUserAgent(
+						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+
+		String post_data = "users=" + user_id;
+		this.NetworkAPI.post_x_www_form_urlencoded("https://web.lobi.co/api/me/contacts", post_data, header);
+	}
+
+	public void unFollow(String user_id) {
+		PostHeader header = new PostHeader()
+				.setHost("web.lobi.co")
+				.setConnection(true)
+				.setAccept("application/json, text/plain, */*")
+				.setUserAgent(
+						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+
+		String post_data = "users=" + user_id;
+		this.NetworkAPI.post_x_www_form_urlencoded("https://web.lobi.co/api/me/contacts/remove", post_data, header);
+	}
+
+	// Original name is "MakeThread"
+	public void newThread(String group_id, String message, boolean shout) {
+		PostHeader header = new PostHeader()
+				.setHost("web.lobi.co")
+				.setConnection(true)
+				.setAccept("application/json, text/plain, */*")
+				.setUserAgent(
+						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+
+		String post_data = "type=" + (shout ? "shout" : "normal") + "&lang=ja&message=" + message;
+		this.NetworkAPI.post_x_www_form_urlencoded("https://web.lobi.co/api/group/" + group_id + "/chats", post_data,
+				header);
+	}
+
+	public void reply(String group_id, String thread_id, String message) {
+		PostHeader header = new PostHeader()
+				.setHost("web.lobi.co")
+				.setConnection(true)
+				.setAccept("application/json, text/plain, */*")
+				.setUserAgent(
+						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+
+		String post_data = "type=normal&lang=ja&message=" + message + "&reply_to=" + thread_id;
+		this.NetworkAPI.post_x_www_form_urlencoded("https://web.lobi.co/api/group/" + group_id + "/chats", post_data,
+				header);
+	}
+
+	// Original name is "RemoveGroup"
+	public void deleteGroup(String group_id) {
+		PostHeader header = new PostHeader()
+				.setHost("web.lobi.co")
+				.setConnection(true)
+				.setAccept("application/json, text/plain, */*")
+				.setUserAgent(
+						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+
+		String post_data = "";
+		this.NetworkAPI.post_x_www_form_urlencoded("https://web.lobi.co/api/group/" + group_id + "/chats", post_data,
+				header);
+	}
+
+	// Original name is "MakePrivateThread"
+	public MakePrivateGroupResult newPrivateThread(String user_id) {
+		PostHeader header = new PostHeader()
+				.setHost("web.lobi.co")
+				.setConnection(true)
+				.setAccept("application/json, text/plain, */*")
+				.setUserAgent(
+						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+
+		String post_data = "user=" + user_id;
+		return gson
+				.fromJson(this.NetworkAPI.post_x_www_form_urlencoded("https://web.lobi.co/api/groups/1on1s", post_data,
+						header), MakePrivateGroupResult.class);
+	}
+
+	// Original name is "RemoveGroup"
+	public void changeProfile(String name, String description) {
+		PostHeader header = new PostHeader()
+				.setHost("web.lobi.co")
+				.setConnection(true)
+				.setAccept("application/json, text/plain, */*")
+				.setUserAgent(
+						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+
+		String post_data = "name=" + name + "&description=" + description;
+		this.NetworkAPI.post_x_www_form_urlencoded("https://web.lobi.co/api/me/profile", post_data, header);
 	}
 
 	private static class Pattern {

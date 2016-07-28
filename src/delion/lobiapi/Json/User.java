@@ -1,11 +1,11 @@
 package delion.lobiapi.Json;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 
 public class User {
 	public Long contacted_date;
 	public String cover;
-	@JsonProperty("default")
+	@SerializedName("default")
 	public Integer _default;
 	public String description;
 	public String icon;

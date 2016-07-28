@@ -1,8 +1,5 @@
 package delion.lobiapi.Json;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-@JsonIgnoreProperties(ignoreUnknown=true)
 public class Group {
 	public Long created_date;
 	public String description;
