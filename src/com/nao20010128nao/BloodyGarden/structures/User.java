@@ -1,4 +1,4 @@
-package delion.lobiapi.Json;
+package com.nao20010128nao.BloodyGarden.structures;
 
 import com.google.gson.annotations.SerializedName;
 

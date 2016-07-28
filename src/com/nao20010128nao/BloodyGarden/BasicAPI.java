@@ -1,4 +1,4 @@
-package delion.lobiapi;
+package com.nao20010128nao.BloodyGarden;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -8,22 +8,21 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
-
-import delion.lobiapi.HttpAPI.Http;
-import delion.lobiapi.HttpAPI.Header.GetHeader;
-import delion.lobiapi.HttpAPI.Header.PostHeader;
-import delion.lobiapi.Json.Bookmarks;
-import delion.lobiapi.Json.Chat;
-import delion.lobiapi.Json.Contacts;
-import delion.lobiapi.Json.Followers;
-import delion.lobiapi.Json.Group;
-import delion.lobiapi.Json.MakePrivateGroupResult;
-import delion.lobiapi.Json.Me;
-import delion.lobiapi.Json.Notifications;
-import delion.lobiapi.Json.Pokes;
-import delion.lobiapi.Json.PrivateGroups;
-import delion.lobiapi.Json.PublicGroups;
-import delion.lobiapi.Json.User;
+import com.nao20010128nao.BloodyGarden.network.Http;
+import com.nao20010128nao.BloodyGarden.network.Header.GetHeader;
+import com.nao20010128nao.BloodyGarden.network.Header.PostHeader;
+import com.nao20010128nao.BloodyGarden.structures.Bookmarks;
+import com.nao20010128nao.BloodyGarden.structures.Chat;
+import com.nao20010128nao.BloodyGarden.structures.Contacts;
+import com.nao20010128nao.BloodyGarden.structures.Followers;
+import com.nao20010128nao.BloodyGarden.structures.Group;
+import com.nao20010128nao.BloodyGarden.structures.MakePrivateGroupResult;
+import com.nao20010128nao.BloodyGarden.structures.Me;
+import com.nao20010128nao.BloodyGarden.structures.Notifications;
+import com.nao20010128nao.BloodyGarden.structures.Pokes;
+import com.nao20010128nao.BloodyGarden.structures.PrivateGroups;
+import com.nao20010128nao.BloodyGarden.structures.PublicGroups;
+import com.nao20010128nao.BloodyGarden.structures.User;
 
 public class BasicAPI {
 	private Http NetworkAPI = new Http();

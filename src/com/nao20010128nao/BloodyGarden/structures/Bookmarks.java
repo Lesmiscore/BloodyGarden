@@ -1,4 +1,4 @@
-package delion.lobiapi.Json;
+package com.nao20010128nao.BloodyGarden.structures;
 
 public class Bookmarks {
 	public Chat[] data;
