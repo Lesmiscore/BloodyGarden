@@ -24,11 +24,11 @@ import com.nao20010128nao.BloodyGarden.structures.PrivateGroups;
 import com.nao20010128nao.BloodyGarden.structures.PublicGroups;
 import com.nao20010128nao.BloodyGarden.structures.User;
 
-public class BasicAPI {
+public class LobiServices {
 	private Http NetworkAPI = new Http();
 	private Gson gson = new Gson();
 
-	public BasicAPI() {
+	public LobiServices() {
 
 	}
 
