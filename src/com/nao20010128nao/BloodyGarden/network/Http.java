@@ -75,11 +75,16 @@ public class Http {
 						redirect_header);
 			} else {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
-				String buffer = reader.readLine();
-				while (buffer != null) {
-					result += buffer + "\n";
-					buffer = reader.readLine();
+				StringBuilder sb = new StringBuilder();
+				char[] buffer = new char[8192];
+				int r = 0;
+				while (true) {
+					r = reader.read(buffer);
+					if (r <= 0)
+						break;
+					sb.append(buffer, 0, r);
 				}
+				result = sb.toString();
 			}
 		} catch (URISyntaxException e) {
 
@@ -144,11 +149,16 @@ public class Http {
 						redirect_header);
 			} else {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
-				String buffer = reader.readLine();
-				while (buffer != null) {
-					result += buffer + "\n";
-					buffer = reader.readLine();
+				StringBuilder sb = new StringBuilder();
+				char[] buffer = new char[8192];
+				int r = 0;
+				while (true) {
+					r = reader.read(buffer);
+					if (r <= 0)
+						break;
+					sb.append(buffer, 0, r);
 				}
+				result = sb.toString();
 			}
 		} catch (URISyntaxException e) {
 			result = "error1";
@@ -212,11 +222,16 @@ public class Http {
 						redirect_header);
 			} else {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
-				String buffer = reader.readLine();
-				while (buffer != null) {
-					result += buffer + "\n";
-					buffer = reader.readLine();
+				StringBuilder sb = new StringBuilder();
+				char[] buffer = new char[8192];
+				int r = 0;
+				while (true) {
+					r = reader.read(buffer);
+					if (r <= 0)
+						break;
+					sb.append(buffer, 0, r);
 				}
+				result = sb.toString();
 			}
 		} catch (URISyntaxException e) {
 			result = "error1";
@@ -284,11 +299,16 @@ public class Http {
 						redirect_header);
 			} else {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
-				String buffer = reader.readLine();
-				while (buffer != null) {
-					result += buffer + "\n";
-					buffer = reader.readLine();
+				StringBuilder sb = new StringBuilder();
+				char[] buffer = new char[8192];
+				int r = 0;
+				while (true) {
+					r = reader.read(buffer);
+					if (r <= 0)
+						break;
+					sb.append(buffer, 0, r);
 				}
+				result = sb.toString();
 			}
 		} catch (URISyntaxException e) {
 			result = "error1";
