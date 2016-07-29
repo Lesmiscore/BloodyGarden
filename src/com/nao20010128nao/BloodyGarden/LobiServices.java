@@ -444,7 +444,7 @@ public class LobiServices {
 	}
 
 	// Original name is "MakeThread"
-	public void newThread(String group_id, String message, boolean shout) {
+	public com.nao20010128nao.BloodyGarden.structures.Thread newThread(String group_id, String message, boolean shout) {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -454,8 +454,9 @@ public class LobiServices {
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 
 		String post_data = "type=" + (shout ? "shout" : "normal") + "&lang=ja&message=" + message;
-		this.NetworkAPI.post_x_www_form_urlencoded("https://web.lobi.co/api/group/" + group_id + "/chats", post_data,
-				header);
+		return gson.fromJson(this.NetworkAPI.post_x_www_form_urlencoded(
+				"https://web.lobi.co/api/group/" + group_id + "/chats", post_data,
+				header), com.nao20010128nao.BloodyGarden.structures.Thread.class);
 	}
 
 	public void reply(String group_id, String thread_id, String message) {
