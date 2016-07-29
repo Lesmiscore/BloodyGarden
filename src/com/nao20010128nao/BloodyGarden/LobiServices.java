@@ -5,6 +5,9 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
@@ -40,7 +43,7 @@ public class LobiServices {
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 		String source = Http.get("https://lobi.co/signin", header1);
-		String csrf_token = Pattern.get_string(source, Pattern.csrf_token, "\"");
+		String csrf_token = Jsoup.parse(source).select("input[name=\"csrf_token\"]").get(0).text();
 
 		String post_data = String.format("csrf_token=%s&email=%s&password=%s", csrf_token, mail, password);
 		PostHeader header2 = new PostHeader()
@@ -66,9 +69,10 @@ public class LobiServices {
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 		String source = Http.get("https://lobi.co/signup/twitter", header1);
-		String authenticity_token = Pattern.get_string(source, Pattern.authenticity_token, "\"");
-		String redirect_after_login = Pattern.get_string(source, Pattern.redirect_after_login, "\"");
-		String oauth_token = Pattern.get_string(source, Pattern.oauth_token, "\"");
+		Document sourceDom = Jsoup.parse(source);
+		String authenticity_token = sourceDom.select("input[name=\"authenticity_token\"]").get(0).text();
+		String redirect_after_login = sourceDom.select("input[name=\"redirect_after_login\"]").get(0).text();
+		String oauth_token = sourceDom.select("input[name=\"oauth_token\"]").get(0).text();
 
 		String post_data = "";
 		try {
@@ -91,9 +95,9 @@ public class LobiServices {
 				post_data, header2);
 		if (source2.indexOf("Twitterにログイン") > -1)
 			return false;
+		Document source2Dom = Jsoup.parse(source2);
 
-		return Http.get(Pattern.get_string(source2, Pattern.twitter_redirect_to_lobi, "\""), header1)
-				.indexOf("ログインに失敗しました") == -1;
+		return Http.get(source2Dom.select("a.maintain-context").get(0).text(), header1).indexOf("ログインに失敗しました") == -1;
 	}
 
 	public Me getMe() {
@@ -515,20 +519,6 @@ public class LobiServices {
 
 		String post_data = "name=" + name + "&description=" + description;
 		Http.post_x_www_form_urlencoded("https://web.lobi.co/api/me/profile", post_data, header);
-	}
-
-	private static class Pattern {
-		public static String csrf_token = "<input type=\"hidden\" name=\"csrf_token\" value=\"";
-		public static String authenticity_token = "<input name=\"authenticity_token\" type=\"hidden\" value=\"";
-		public static String redirect_after_login = "<input name=\"redirect_after_login\" type=\"hidden\" value=\"";
-		public static String oauth_token = "<input id=\"oauth_token\" name=\"oauth_token\" type=\"hidden\" value=\"";
-		public static String twitter_redirect_to_lobi = "<a class=\"maintain-context\" href=\"";
-
-		public static String get_string(String source, String pattern, String end_pattern) {
-			int start = source.indexOf(pattern) + pattern.length();
-			int end = source.indexOf(end_pattern, start + 1);
-			return source.substring(start, end);
-		}
 	}
 
 	public static boolean checkAvailable() {
