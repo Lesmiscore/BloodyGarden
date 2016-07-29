@@ -27,11 +27,11 @@ public class Http {
 
 	}
 
-	public Http() {
+	private Http() {
 
 	}
 
-	public String get(String url, GetHeader header) {
+	public static String get(String url, GetHeader header) {
 		String result = "";
 		try {
 			URI uri = new URI(url);
@@ -70,8 +70,7 @@ public class Http {
 					redirect_header.setAcceptEncoding(header.AcceptEncoding);
 				if (header.AcceptLanguage.equals(""))
 					redirect_header.setAcceptLanguage(header.AcceptLanguage);
-				result = this.get(
-						(location.indexOf("http") != 0 ? url.substring(0, url.lastIndexOf("/")) : "") + location,
+				result = get((location.indexOf("http") != 0 ? url.substring(0, url.lastIndexOf("/")) : "") + location,
 						redirect_header);
 			} else {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
@@ -96,7 +95,7 @@ public class Http {
 		return result;
 	}
 
-	public String post(String url, String data, PostHeader header) {
+	public static String post(String url, String data, PostHeader header) {
 		String result = "";
 		try {
 			URI uri = new URI(url);
@@ -144,8 +143,7 @@ public class Http {
 					redirect_header.setAcceptEncoding(header.AcceptEncoding);
 				if (header.AcceptLanguage.equals(""))
 					redirect_header.setAcceptLanguage(header.AcceptLanguage);
-				result = this.get(
-						(location.indexOf("http") != 0 ? url.substring(0, url.lastIndexOf("/")) : "") + location,
+				result = get((location.indexOf("http") != 0 ? url.substring(0, url.lastIndexOf("/")) : "") + location,
 						redirect_header);
 			} else {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
@@ -170,7 +168,7 @@ public class Http {
 		return result;
 	}
 
-	public String post_x_www_form_urlencoded(String url, String data, PostHeader header) {
+	public static String post_x_www_form_urlencoded(String url, String data, PostHeader header) {
 		String result = "";
 		try {
 			URI uri = new URI(url);
@@ -217,8 +215,7 @@ public class Http {
 					redirect_header.setAcceptEncoding(header.AcceptEncoding);
 				if (header.AcceptLanguage.equals(""))
 					redirect_header.setAcceptLanguage(header.AcceptLanguage);
-				result = this.get(
-						(location.indexOf("http") != 0 ? url.substring(0, url.lastIndexOf("/")) : "") + location,
+				result = get((location.indexOf("http") != 0 ? url.substring(0, url.lastIndexOf("/")) : "") + location,
 						redirect_header);
 			} else {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
@@ -243,7 +240,7 @@ public class Http {
 		return result;
 	}
 
-	public String post_form_data(String url, String boundary, String[] data, PostHeader header) {
+	public static String post_form_data(String url, String boundary, String[] data, PostHeader header) {
 		String result = "";
 		try {
 			String post_data = "";
@@ -294,8 +291,7 @@ public class Http {
 					redirect_header.setAcceptEncoding(header.AcceptEncoding);
 				if (header.AcceptLanguage.equals(""))
 					redirect_header.setAcceptLanguage(header.AcceptLanguage);
-				result = this.get(
-						(location.indexOf("http") != 0 ? url.substring(0, url.lastIndexOf("/")) : "") + location,
+				result = get((location.indexOf("http") != 0 ? url.substring(0, url.lastIndexOf("/")) : "") + location,
 						redirect_header);
 			} else {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));

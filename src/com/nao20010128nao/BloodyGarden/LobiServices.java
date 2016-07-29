@@ -25,7 +25,6 @@ import com.nao20010128nao.BloodyGarden.structures.PublicGroups;
 import com.nao20010128nao.BloodyGarden.structures.User;
 
 public class LobiServices {
-	private Http NetworkAPI = new Http();
 	private Gson gson = new Gson();
 
 	public LobiServices() {
@@ -40,7 +39,7 @@ public class LobiServices {
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
-		String source = this.NetworkAPI.get("https://lobi.co/signin", header1);
+		String source = Http.get("https://lobi.co/signin", header1);
 		String csrf_token = Pattern.get_string(source, Pattern.csrf_token, "\"");
 
 		String post_data = String.format("csrf_token=%s&email=%s&password=%s", csrf_token, mail, password);
@@ -54,7 +53,7 @@ public class LobiServices {
 				.setOrigin("https://lobi.co")
 				.setReferer("https://lobi.co/signin");
 
-		String result = this.NetworkAPI.post_x_www_form_urlencoded("https://lobi.co/signin", post_data, header2);
+		String result = Http.post_x_www_form_urlencoded("https://lobi.co/signin", post_data, header2);
 		return result.indexOf("ログインに失敗しました") == -1;
 	}
 
@@ -66,7 +65,7 @@ public class LobiServices {
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
-		String source = this.NetworkAPI.get("https://lobi.co/signup/twitter", header1);
+		String source = Http.get("https://lobi.co/signup/twitter", header1);
 		String authenticity_token = Pattern.get_string(source, Pattern.authenticity_token, "\"");
 		String redirect_after_login = Pattern.get_string(source, Pattern.redirect_after_login, "\"");
 		String oauth_token = Pattern.get_string(source, Pattern.oauth_token, "\"");
@@ -88,12 +87,12 @@ public class LobiServices {
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6")
 				.setOrigin("https://api.twitter.com");
 
-		String source2 = this.NetworkAPI.post_x_www_form_urlencoded("https://api.twitter.com/oauth/authorize",
+		String source2 = Http.post_x_www_form_urlencoded("https://api.twitter.com/oauth/authorize",
 				post_data, header2);
 		if (source2.indexOf("Twitterにログイン") > -1)
 			return false;
 
-		return this.NetworkAPI.get(Pattern.get_string(source2, Pattern.twitter_redirect_to_lobi, "\""), header1)
+		return Http.get(Pattern.get_string(source2, Pattern.twitter_redirect_to_lobi, "\""), header1)
 				.indexOf("ログインに失敗しました") == -1;
 	}
 
@@ -107,7 +106,7 @@ public class LobiServices {
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 
 		try {
-			String result_json = this.NetworkAPI.get("https://web.lobi.co/api/me?fields=premium", header);
+			String result_json = Http.get("https://web.lobi.co/api/me?fields=premium", header);
 			return gson.fromJson(result_json, Me.class);
 		} catch (JsonParseException e) {
 			e.printStackTrace();
@@ -128,7 +127,7 @@ public class LobiServices {
 		int index = 1;
 		while (true)
 			try {
-				List<PublicGroups> pg = gson.fromJson(this.NetworkAPI.get(
+				List<PublicGroups> pg = gson.fromJson(Http.get(
 						"https://web.lobi.co/api/public_groups?count=1000&page=" + index + "&with_archived=1", header),
 						new TypeToken<List<PublicGroups>>() {
 						}.getType());
@@ -158,7 +157,7 @@ public class LobiServices {
 		while (true)
 			try {
 				List<PrivateGroups> pg = gson.fromJson(
-						this.NetworkAPI.get("https://web.lobi.co/api/groups?count=1000&page=" + index, header),
+						Http.get("https://web.lobi.co/api/groups?count=1000&page=" + index, header),
 						new TypeToken<List<PrivateGroups>>() {
 						}.getType());
 				index++;
@@ -183,7 +182,7 @@ public class LobiServices {
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 
 		try {
-			return gson.fromJson(this.NetworkAPI
+			return gson.fromJson(Http
 					.get("https://web.lobi.co/api/info/notifications?platform=any&last_cursor=0", header),
 					Notifications.class);
 		} catch (JsonParseException e) {
@@ -203,7 +202,7 @@ public class LobiServices {
 
 		try {
 			return gson.fromJson(
-					this.NetworkAPI.get("https://web.lobi.co/api/user/" + uid + "/contacts", header), Contacts.class);
+					Http.get("https://web.lobi.co/api/user/" + uid + "/contacts", header), Contacts.class);
 		} catch (JsonParseException e) {
 			e.printStackTrace();
 		}
@@ -221,7 +220,7 @@ public class LobiServices {
 
 		try {
 			return gson.fromJson(
-					this.NetworkAPI.get("https://web.lobi.co/api/user/" + uid + "/followers", header), Followers.class);
+					Http.get("https://web.lobi.co/api/user/" + uid + "/followers", header), Followers.class);
 		} catch (JsonParseException e) {
 			e.printStackTrace();
 		}
@@ -239,7 +238,7 @@ public class LobiServices {
 
 		try {
 			return gson.fromJson(
-					this.NetworkAPI.get(
+					Http.get(
 							"https://web.lobi.co/api/group/" + uid
 									+ "?error_flavor=json2&fields=group_bookmark_info%2Capp_events_info",
 							header),
@@ -261,7 +260,7 @@ public class LobiServices {
 
 		try {
 			Integer result = gson.fromJson(
-					this.NetworkAPI.get("https://web.lobi.co/api/group/" + uid
+					Http.get("https://web.lobi.co/api/group/" + uid
 							+ "?error_flavor=json2&fields=group_bookmark_info%2Capp_events_info", header),
 					Group.class).members_count;
 			return result == null ? 0 : (int) result;
@@ -286,7 +285,7 @@ public class LobiServices {
 		while (limit-- > 0)
 			try {
 				Group g = gson.fromJson(
-						this.NetworkAPI.get("https://web.lobi.co/api/group/" + uid + "?members_cursor=" + next, header),
+						Http.get("https://web.lobi.co/api/group/" + uid + "?members_cursor=" + next, header),
 						Group.class);
 				for (User user : g.members)
 					result.add(user);
@@ -312,7 +311,7 @@ public class LobiServices {
 
 		try {
 			List<Chat> result = gson.fromJson(
-					this.NetworkAPI.get("https://web.lobi.co/api/group/" + uid + "/chats?count=" + count, header),
+					Http.get("https://web.lobi.co/api/group/" + uid + "/chats?count=" + count, header),
 					new TypeToken<List<Chat>>() {
 					}.getType());
 			return result.toArray(new Chat[0]);
@@ -333,7 +332,7 @@ public class LobiServices {
 
 		try {
 			return gson.fromJson(
-					this.NetworkAPI.get("https://web.lobi.co/api/group/" + groupId + "/chats/pokes?id=" + chatId,
+					Http.get("https://web.lobi.co/api/group/" + groupId + "/chats/pokes?id=" + chatId,
 							header),
 					Pokes.class);
 		} catch (JsonParseException e) {
@@ -353,7 +352,7 @@ public class LobiServices {
 
 		try {
 			return gson.fromJson(
-					this.NetworkAPI.get("https://web.lobi.co/api/me/bookmarks", header),
+					Http.get("https://web.lobi.co/api/me/bookmarks", header),
 					Bookmarks.class);
 		} catch (JsonParseException e) {
 			e.printStackTrace();
@@ -371,7 +370,7 @@ public class LobiServices {
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 
 		String post_data = "id=" + chat_id;
-		this.NetworkAPI.post_x_www_form_urlencoded(
+		Http.post_x_www_form_urlencoded(
 				"https://web.lobi.co/api/group/" + group_id + "/chats/like", post_data, header);
 	}
 
@@ -385,7 +384,7 @@ public class LobiServices {
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 
 		String post_data = "id=" + chat_id;
-		this.NetworkAPI.post_x_www_form_urlencoded(
+		Http.post_x_www_form_urlencoded(
 				"https://web.lobi.co/api/group/" + group_id + "/chats/unlike", post_data, header);
 	}
 
@@ -399,7 +398,7 @@ public class LobiServices {
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 
 		String post_data = "id=" + chat_id;
-		this.NetworkAPI.post_x_www_form_urlencoded(
+		Http.post_x_www_form_urlencoded(
 				"https://web.lobi.co/api/group/" + group_id + "/chats/like", post_data, header);
 	}
 
@@ -413,7 +412,7 @@ public class LobiServices {
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 
 		String post_data = "id=" + chat_id;
-		this.NetworkAPI.post_x_www_form_urlencoded(
+		Http.post_x_www_form_urlencoded(
 				"https://web.lobi.co/api/group/" + group_id + "/chats/unlike", post_data, header);
 	}
 
@@ -427,7 +426,7 @@ public class LobiServices {
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 
 		String post_data = "users=" + user_id;
-		this.NetworkAPI.post_x_www_form_urlencoded("https://web.lobi.co/api/me/contacts", post_data, header);
+		Http.post_x_www_form_urlencoded("https://web.lobi.co/api/me/contacts", post_data, header);
 	}
 
 	public void unFollow(String user_id) {
@@ -440,7 +439,7 @@ public class LobiServices {
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 
 		String post_data = "users=" + user_id;
-		this.NetworkAPI.post_x_www_form_urlencoded("https://web.lobi.co/api/me/contacts/remove", post_data, header);
+		Http.post_x_www_form_urlencoded("https://web.lobi.co/api/me/contacts/remove", post_data, header);
 	}
 
 	// Original name is "MakeThread"
@@ -454,7 +453,7 @@ public class LobiServices {
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 
 		String post_data = "type=" + (shout ? "shout" : "normal") + "&lang=ja&message=" + message;
-		return gson.fromJson(this.NetworkAPI.post_x_www_form_urlencoded(
+		return gson.fromJson(Http.post_x_www_form_urlencoded(
 				"https://web.lobi.co/api/group/" + group_id + "/chats", post_data,
 				header), com.nao20010128nao.BloodyGarden.structures.Thread.class);
 	}
@@ -469,7 +468,7 @@ public class LobiServices {
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 
 		String post_data = "type=normal&lang=ja&message=" + message + "&reply_to=" + thread_id;
-		this.NetworkAPI.post_x_www_form_urlencoded("https://web.lobi.co/api/group/" + group_id + "/chats", post_data,
+		Http.post_x_www_form_urlencoded("https://web.lobi.co/api/group/" + group_id + "/chats", post_data,
 				header);
 	}
 
@@ -484,7 +483,7 @@ public class LobiServices {
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 
 		String post_data = "";
-		this.NetworkAPI.post_x_www_form_urlencoded("https://web.lobi.co/api/group/" + group_id + "/chats", post_data,
+		Http.post_x_www_form_urlencoded("https://web.lobi.co/api/group/" + group_id + "/chats", post_data,
 				header);
 	}
 
@@ -500,7 +499,7 @@ public class LobiServices {
 
 		String post_data = "user=" + user_id;
 		return gson
-				.fromJson(this.NetworkAPI.post_x_www_form_urlencoded("https://web.lobi.co/api/groups/1on1s", post_data,
+				.fromJson(Http.post_x_www_form_urlencoded("https://web.lobi.co/api/groups/1on1s", post_data,
 						header), MakePrivateGroupResult.class);
 	}
 
@@ -515,7 +514,7 @@ public class LobiServices {
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 
 		String post_data = "name=" + name + "&description=" + description;
-		this.NetworkAPI.post_x_www_form_urlencoded("https://web.lobi.co/api/me/profile", post_data, header);
+		Http.post_x_www_form_urlencoded("https://web.lobi.co/api/me/profile", post_data, header);
 	}
 
 	private static class Pattern {
@@ -529,6 +528,22 @@ public class LobiServices {
 			int start = source.indexOf(pattern) + pattern.length();
 			int end = source.indexOf(end_pattern, start + 1);
 			return source.substring(start, end);
+		}
+	}
+
+	public static boolean checkAvailable() {
+		GetHeader header = new GetHeader()
+				.setHost("web.lobi.co")
+				.setConnection(true)
+				.setAccept("*/*")
+				.setUserAgent(
+						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+
+		try {
+			return Http.get("https://web.lobi.co/api/me/bookmarks", header).equalsIgnoreCase("Slow down");
+		} catch (Exception e) {
+			return false;
 		}
 	}
 }
