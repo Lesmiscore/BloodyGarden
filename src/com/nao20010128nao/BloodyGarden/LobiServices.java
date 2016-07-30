@@ -47,7 +47,8 @@ public class LobiServices {
 		String source = Http.get("https://lobi.co/signin", header1);
 		String csrf_token = Jsoup.parse(source).select("input[name=\"csrf_token\"]").get(0).text();
 
-		String post_data = String.format("csrf_token=%s&email=%s&password=%s", csrf_token, mail, password);
+		String post_data = String.format("csrf_token=%s&email=%s&password=%s", encode(csrf_token), encode(mail),
+				encode(password));
 		PostHeader header2 = new PostHeader()
 				.setHost("lobi.co")
 				.setConnection(true)
@@ -76,14 +77,10 @@ public class LobiServices {
 		String redirect_after_login = sourceDom.select("input[name=\"redirect_after_login\"]").get(0).text();
 		String oauth_token = sourceDom.select("input[name=\"oauth_token\"]").get(0).text();
 
-		String post_data = "";
-		try {
-			post_data = String.format(
-					"authenticity_token=%s&redirect_after_login=%s&oauth_token=%s&session%%5Busername_or_email%%5D=%s&session%%5Bpassword%%5D=%s",
-					authenticity_token, URLEncoder.encode(redirect_after_login, "UTF-8"), oauth_token, mail, password);
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+		String post_data = String.format(
+				"authenticity_token=%s&redirect_after_login=%s&oauth_token=%s&session%%5Busername_or_email%%5D=%s&session%%5Bpassword%%5D=%s",
+				encode(authenticity_token), encode(redirect_after_login), encode(oauth_token), encode(mail),
+				encode(password));
 		PostHeader header2 = new PostHeader()
 				.setHost("api.twitter.com")
 				.setConnection(true)
@@ -458,7 +455,7 @@ public class LobiServices {
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 
-		String post_data = "type=" + (shout ? "shout" : "normal") + "&lang=ja&message=" + message;
+		String post_data = "type=" + (shout ? "shout" : "normal") + "&lang=ja&message=" + encode(message);
 		return gson.fromJson(Http.post_x_www_form_urlencoded(
 				"https://web.lobi.co/api/group/" + group_id + "/chats", post_data,
 				header), com.nao20010128nao.BloodyGarden.structures.Thread.class);
@@ -473,7 +470,7 @@ public class LobiServices {
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 
-		String post_data = "type=normal&lang=ja&message=" + message + "&reply_to=" + thread_id;
+		String post_data = "type=normal&lang=ja&message=" + encode(message) + "&reply_to=" + thread_id;
 		Http.post_x_www_form_urlencoded("https://web.lobi.co/api/group/" + group_id + "/chats", post_data,
 				header);
 	}
@@ -518,24 +515,8 @@ public class LobiServices {
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 
-		String post_data = "name=" + name + "&description=" + description;
+		String post_data = "name=" + encode(name) + "&description=" + encode(description);
 		Http.post_x_www_form_urlencoded("https://web.lobi.co/api/me/profile", post_data, header);
-	}
-
-	public static boolean checkAvailable() {
-		GetHeader header = new GetHeader()
-				.setHost("web.lobi.co")
-				.setConnection(true)
-				.setAccept("*/*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
-
-		try {
-			return Http.get("https://web.lobi.co/", header).equalsIgnoreCase("Slow down");
-		} catch (Exception e) {
-			return false;
-		}
 	}
 
 	public MakePublicGroupResult newPublicThread(String name, String desc, String game) {
@@ -548,7 +529,7 @@ public class LobiServices {
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6")
 				.setReferer("https://web.lobi.co/home/public-group");
 
-		String post_data = "name=" + name + "&description=" + desc;
+		String post_data = "name=" + encode(name) + "&description=" + encode(desc);
 		if (game != null)
 			post_data += "&game_uid=" + game;
 		String result = Http.post_x_www_form_urlencoded("https://web.lobi.co/api/public_groups", post_data, header);
@@ -568,7 +549,32 @@ public class LobiServices {
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 
-		return gson.fromJson(Http.get("https://web.lobi.co/api/games/search?q=" + keyword + "&page=" + page, header),
+		return gson.fromJson(
+				Http.get("https://web.lobi.co/api/games/search?q=" + encode(keyword) + "&page=" + page, header),
 				GameSearchResult.class);
+	}
+
+	public static boolean checkAvailable() {
+		GetHeader header = new GetHeader()
+				.setHost("web.lobi.co")
+				.setConnection(true)
+				.setAccept("*/*")
+				.setUserAgent(
+						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+
+		try {
+			return Http.get("https://web.lobi.co/", header).equalsIgnoreCase("Slow down");
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	private static String encode(String s) {
+		try {
+			return URLEncoder.encode(s, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			return null;
+		}
 	}
 }
