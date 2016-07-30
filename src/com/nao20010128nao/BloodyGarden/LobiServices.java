@@ -18,8 +18,10 @@ import com.nao20010128nao.BloodyGarden.structures.Bookmarks;
 import com.nao20010128nao.BloodyGarden.structures.Chat;
 import com.nao20010128nao.BloodyGarden.structures.Contacts;
 import com.nao20010128nao.BloodyGarden.structures.Followers;
+import com.nao20010128nao.BloodyGarden.structures.GameSearchResult;
 import com.nao20010128nao.BloodyGarden.structures.Group;
 import com.nao20010128nao.BloodyGarden.structures.MakePrivateGroupResult;
+import com.nao20010128nao.BloodyGarden.structures.MakePublicGroupResult;
 import com.nao20010128nao.BloodyGarden.structures.Me;
 import com.nao20010128nao.BloodyGarden.structures.Notifications;
 import com.nao20010128nao.BloodyGarden.structures.Pokes;
@@ -507,7 +509,6 @@ public class LobiServices {
 						header), MakePrivateGroupResult.class);
 	}
 
-	// Original name is "RemoveGroup"
 	public void changeProfile(String name, String description) {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
@@ -535,5 +536,39 @@ public class LobiServices {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+	public MakePublicGroupResult newPublicThread(String name, String desc, String game) {
+		PostHeader header = new PostHeader()
+				.setHost("web.lobi.co")
+				.setConnection(true)
+				.setAccept("application/json, text/plain, */*")
+				.setUserAgent(
+						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6")
+				.setReferer("https://web.lobi.co/home/public-group");
+
+		String post_data = "name=" + name + "&description=" + desc;
+		if (game != null)
+			post_data += "&game_uid=" + game;
+		String result = Http.post_x_www_form_urlencoded("https://web.lobi.co/api/public_groups", post_data, header);
+		try {
+			return gson.fromJson(result, MakePublicGroupResult.class);
+		} catch (Throwable e) {
+			throw new RuntimeException(result, e);
+		}
+	}
+
+	public GameSearchResult searchGame(String keyword, int page) {
+		GetHeader header = new GetHeader()
+				.setHost("web.lobi.co")
+				.setConnection(true)
+				.setAccept("*/*")
+				.setUserAgent(
+						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+
+		return gson.fromJson(Http.get("https://web.lobi.co/api/games/search?q=" + keyword + "&page=" + page, header),
+				GameSearchResult.class);
 	}
 }
