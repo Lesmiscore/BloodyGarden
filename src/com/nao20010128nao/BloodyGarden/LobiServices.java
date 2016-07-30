@@ -531,7 +531,7 @@ public class LobiServices {
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 
 		try {
-			return Http.get("https://web.lobi.co/api/me/bookmarks", header).equalsIgnoreCase("Slow down");
+			return Http.get("https://web.lobi.co/", header).equalsIgnoreCase("Slow down");
 		} catch (Exception e) {
 			return false;
 		}
