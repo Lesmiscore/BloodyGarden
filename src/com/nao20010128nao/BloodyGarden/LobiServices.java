@@ -45,10 +45,10 @@ public class LobiServices {
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 		String source = Http.get("https://lobi.co/signin", header1);
-		String csrf_token = Jsoup.parse(source).select("input[name=\"csrf_token\"]").get(0).text();
+		String csrf_token = Jsoup.parse(source).select("input[name=\"csrf_token\"]").get(0).attr("value");
 
-		String post_data = String.format("csrf_token=%s&email=%s&password=%s", encode(csrf_token), encode(mail),
-				encode(password));
+		String post_data = String.format("csrf_token=%s&email=%s&password=%s", csrf_token, encode(mail),
+				password);
 		PostHeader header2 = new PostHeader()
 				.setHost("lobi.co")
 				.setConnection(true)
@@ -60,7 +60,7 @@ public class LobiServices {
 				.setReferer("https://lobi.co/signin");
 
 		String result = Http.post_x_www_form_urlencoded("https://lobi.co/signin", post_data, header2);
-		return result.indexOf("ログインに失敗しました") == -1;
+		return result.indexOf("ログインに失敗しました") == -1 || result.indexOf("Invalid request") == -1;
 	}
 
 	public boolean twitterLogin(String mail, String password) {
@@ -79,8 +79,7 @@ public class LobiServices {
 
 		String post_data = String.format(
 				"authenticity_token=%s&redirect_after_login=%s&oauth_token=%s&session%%5Busername_or_email%%5D=%s&session%%5Bpassword%%5D=%s",
-				encode(authenticity_token), encode(redirect_after_login), encode(oauth_token), encode(mail),
-				encode(password));
+				authenticity_token, redirect_after_login, oauth_token, mail, password);
 		PostHeader header2 = new PostHeader()
 				.setHost("api.twitter.com")
 				.setConnection(true)
@@ -453,12 +452,13 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6")
+				.setReferer("https://web.lobi.co/group/" + group_id);
 
 		String post_data = "type=" + (shout ? "shout" : "normal") + "&lang=ja&message=" + encode(message);
-		return gson.fromJson(Http.post_x_www_form_urlencoded(
-				"https://web.lobi.co/api/group/" + group_id + "/chats", post_data,
-				header), com.nao20010128nao.BloodyGarden.structures.Thread.class);
+		String result = Http.post_x_www_form_urlencoded("https://web.lobi.co/api/group/" + group_id + "/chats",
+				post_data, header);
+		return gson.fromJson(result, com.nao20010128nao.BloodyGarden.structures.Thread.class);
 	}
 
 	public void reply(String group_id, String thread_id, String message) {
@@ -519,7 +519,7 @@ public class LobiServices {
 		Http.post_x_www_form_urlencoded("https://web.lobi.co/api/me/profile", post_data, header);
 	}
 
-	public MakePublicGroupResult newPublicThread(String name, String desc, String game) {
+	public MakePublicGroupResult newPublicGroup(String name, String desc, String game) {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -564,7 +564,7 @@ public class LobiServices {
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 
 		try {
-			return Http.get("https://web.lobi.co/", header).equalsIgnoreCase("Slow down");
+			return !Http.get("https://web.lobi.co/", header).toLowerCase().contains("slow down");
 		} catch (Exception e) {
 			return false;
 		}

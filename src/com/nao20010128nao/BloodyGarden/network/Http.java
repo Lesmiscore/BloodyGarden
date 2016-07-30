@@ -235,6 +235,7 @@ public class Http {
 		} catch (MalformedURLException e) {
 			result = "error2";
 		} catch (IOException e) {
+			e.printStackTrace();
 			result = "error3";
 		}
 		return result;
@@ -314,5 +315,10 @@ public class Http {
 			result = "error3";
 		}
 		return result;
+	}
+
+	public static void resetCookie() {
+		cookie = new CookieManager();
+		CookieHandler.setDefault(cookie);
 	}
 }
