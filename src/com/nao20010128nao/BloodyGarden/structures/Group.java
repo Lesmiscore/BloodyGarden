@@ -14,7 +14,7 @@ public class Group {
 	public GroupMe me;
 	public User[] members;
 	public Integer members_count;
-	public Integer members_next_cursor;
+	public Long members_next_cursor;
 	public String last_chat_at;
 	public String name;
 	public Object[] needs_to_join;
