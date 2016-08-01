@@ -60,7 +60,9 @@ public class LobiServices {
 				.setReferer("https://lobi.co/signin");
 
 		String result = Http.post_x_www_form_urlencoded("https://lobi.co/signin", post_data, header2);
-		return result.indexOf("ログインに失敗しました") == -1 & result.indexOf("failed signin") == -1;
+		System.out.println(result);
+		return result.indexOf("ログインに失敗しました") == -1 & result.indexOf("failed signin") == -1
+				& !hasLoginFields(Jsoup.parse(result));
 	}
 
 	public boolean twitterLogin(String mail, String password) {
@@ -95,7 +97,21 @@ public class LobiServices {
 			return false;
 		Document source2Dom = Jsoup.parse(source2);
 		String result = Http.get(source2Dom.select("a.maintain-context").get(0).text(), header1);
-		return result.indexOf("ログインに失敗しました") == -1 & result.indexOf("failed signin") == -1;
+		return result.indexOf("ログインに失敗しました") == -1 & result.indexOf("failed signin") == -1
+				& !hasLoginFields(Jsoup.parse(result));
+	}
+
+	private static boolean hasLoginFields(Document doc) {
+		if (doc.select(
+				"div.input--mail__wrapper," +
+						"div.input--password__wrapper," +
+						"input.input--email," +
+						"input.input--password," +
+						"input#input--email," +
+						"input#input--password")
+				.isEmpty())
+			return false;
+		return true;
 	}
 
 	public Me getMe() {
