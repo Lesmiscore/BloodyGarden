@@ -43,7 +43,7 @@ public class LobiServices {
 				.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja");
 		String source = Http.get("https://lobi.co/signin", header1);
 		String csrf_token = Jsoup.parse(source).select("input[name=\"csrf_token\"]").get(0).attr("value");
 
@@ -55,12 +55,13 @@ public class LobiServices {
 				.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6")
+				.setAcceptLanguage("ja")
 				.setOrigin("https://lobi.co")
 				.setReferer("https://lobi.co/signin");
 
 		String result = Http.post_x_www_form_urlencoded("https://lobi.co/signin", post_data, header2);
-		return result.indexOf("ログインに失敗しました") == -1 || result.indexOf("Invalid request") == -1;
+		System.out.println(result);
+		return result.indexOf("ログインに失敗しました") == -1 & result.indexOf("failed signin") == -1;
 	}
 
 	public boolean twitterLogin(String mail, String password) {
@@ -564,7 +565,7 @@ public class LobiServices {
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
 
 		try {
-			return !Http.get("https://web.lobi.co/", header).toLowerCase().contains("slow down");
+			return !Http.get("https://web.lobi.co/", header).equals("slow down");
 		} catch (Exception e) {
 			return false;
 		}
