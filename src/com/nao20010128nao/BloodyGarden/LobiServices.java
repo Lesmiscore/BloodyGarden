@@ -60,7 +60,6 @@ public class LobiServices {
 				.setReferer("https://lobi.co/signin");
 
 		String result = Http.post_x_www_form_urlencoded("https://lobi.co/signin", post_data, header2);
-		System.out.println(result);
 		return result.indexOf("ログインに失敗しました") == -1 & result.indexOf("failed signin") == -1;
 	}
 
@@ -95,8 +94,8 @@ public class LobiServices {
 		if (source2.indexOf("Twitterにログイン") > -1)
 			return false;
 		Document source2Dom = Jsoup.parse(source2);
-
-		return Http.get(source2Dom.select("a.maintain-context").get(0).text(), header1).indexOf("ログインに失敗しました") == -1;
+		String result = Http.get(source2Dom.select("a.maintain-context").get(0).text(), header1);
+		return result.indexOf("ログインに失敗しました") == -1 & result.indexOf("failed signin") == -1;
 	}
 
 	public Me getMe() {
