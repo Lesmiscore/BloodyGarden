@@ -18,6 +18,7 @@ import com.nao20010128nao.BloodyGarden.structures.Bookmarks;
 import com.nao20010128nao.BloodyGarden.structures.Chat;
 import com.nao20010128nao.BloodyGarden.structures.Contacts;
 import com.nao20010128nao.BloodyGarden.structures.Followers;
+import com.nao20010128nao.BloodyGarden.structures.FreeKV;
 import com.nao20010128nao.BloodyGarden.structures.GameSearchResult;
 import com.nao20010128nao.BloodyGarden.structures.Group;
 import com.nao20010128nao.BloodyGarden.structures.MakePrivateGroupResult;
@@ -60,7 +61,12 @@ public class LobiServices {
 				.setReferer("https://lobi.co/signin");
 
 		String result = Http.post_x_www_form_urlencoded("https://lobi.co/signin", post_data, header2);
-		System.out.println(result);
+		try {
+			Class.forName("android.util.Log").getMethod("d", String.class, String.class).invoke(null, "login_data",
+					result);
+		} catch (Throwable e) {
+
+		}
 		return result.indexOf("ログインに失敗しました") == -1 & result.indexOf("failed signin") == -1
 				& !hasLoginFields(Jsoup.parse(result));
 	}
@@ -72,7 +78,7 @@ public class LobiServices {
 				.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 		String source = Http.get("https://lobi.co/signup/twitter", header1);
 		Document sourceDom = Jsoup.parse(source);
 		String authenticity_token = sourceDom.select("input[name=\"authenticity_token\"]").get(0).text();
@@ -88,7 +94,7 @@ public class LobiServices {
 				.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6")
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4")
 				.setOrigin("https://api.twitter.com");
 
 		String source2 = Http.post_x_www_form_urlencoded("https://api.twitter.com/oauth/authorize",
@@ -121,7 +127,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		try {
 			String result_json = Http.get("https://web.lobi.co/api/me?fields=premium", header);
@@ -139,7 +145,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		List<PublicGroups> result = new ArrayList<PublicGroups>();
 		int index = 1;
@@ -168,7 +174,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		List<PrivateGroups> result = new ArrayList<PrivateGroups>();
 		int index = 1;
@@ -197,7 +203,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		try {
 			return gson.fromJson(Http
@@ -216,7 +222,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		try {
 			return gson.fromJson(
@@ -234,7 +240,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		try {
 			return gson.fromJson(
@@ -252,7 +258,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		try {
 			return gson.fromJson(
@@ -274,7 +280,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		try {
 			Integer result = gson.fromJson(
@@ -295,7 +301,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		List<User> result = new ArrayList<User>();
 		String next = "0";
@@ -325,7 +331,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		try {
 			List<Chat> result = gson.fromJson(
@@ -346,7 +352,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		try {
 			return gson.fromJson(
@@ -366,7 +372,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		try {
 			return gson.fromJson(
@@ -385,7 +391,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		String post_data = "id=" + chat_id;
 		Http.post_x_www_form_urlencoded(
@@ -399,7 +405,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		String post_data = "id=" + chat_id;
 		Http.post_x_www_form_urlencoded(
@@ -413,7 +419,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		String post_data = "id=" + chat_id;
 		Http.post_x_www_form_urlencoded(
@@ -427,7 +433,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		String post_data = "id=" + chat_id;
 		Http.post_x_www_form_urlencoded(
@@ -441,7 +447,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		String post_data = "users=" + user_id;
 		Http.post_x_www_form_urlencoded("https://web.lobi.co/api/me/contacts", post_data, header);
@@ -454,7 +460,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		String post_data = "users=" + user_id;
 		Http.post_x_www_form_urlencoded("https://web.lobi.co/api/me/contacts/remove", post_data, header);
@@ -468,12 +474,12 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6")
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4")
 				.setReferer("https://web.lobi.co/group/" + group_id);
 
-		String post_data = "type=" + (shout ? "shout" : "normal") + "&lang=ja&message=" + encode(message);
+		String postData = "type=" + (shout ? "shout" : "normal") + "&lang=ja&message=" + encode(message);
 		String result = Http.post_x_www_form_urlencoded("https://web.lobi.co/api/group/" + group_id + "/chats",
-				post_data, header);
+				postData, header);
 		return gson.fromJson(result, com.nao20010128nao.BloodyGarden.structures.Thread.class);
 	}
 
@@ -484,7 +490,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		String post_data = "type=normal&lang=ja&message=" + encode(message) + "&reply_to=" + thread_id;
 		Http.post_x_www_form_urlencoded("https://web.lobi.co/api/group/" + group_id + "/chats", post_data,
@@ -499,7 +505,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		String post_data = "";
 		Http.post_x_www_form_urlencoded("https://web.lobi.co/api/group/" + group_id + "/chats", post_data,
@@ -514,7 +520,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		String post_data = "user=" + user_id;
 		return gson
@@ -529,7 +535,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		String post_data = "name=" + encode(name) + "&description=" + encode(description);
 		Http.post_x_www_form_urlencoded("https://web.lobi.co/api/me/profile", post_data, header);
@@ -542,7 +548,7 @@ public class LobiServices {
 				.setAccept("application/json, text/plain, */*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6")
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4")
 				.setReferer("https://web.lobi.co/home/public-group");
 
 		String post_data = "name=" + encode(name) + "&description=" + encode(desc);
@@ -563,11 +569,40 @@ public class LobiServices {
 				.setAccept("*/*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		return gson.fromJson(
 				Http.get("https://web.lobi.co/api/games/search?q=" + encode(keyword) + "&page=" + page, header),
 				GameSearchResult.class);
+	}
+
+	public boolean deleteAccount() {
+		PostHeader header = new PostHeader()
+				.setHost("web.lobi.co")
+				.setConnection(true)
+				.setAccept("*/*")
+				.setUserAgent(
+						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4")
+				.setReferer("https://web.lobi.co/setting");
+
+		String postData = "why=" + encode("唐澤貴洋愛す覚悟しろ無能");
+		String token = Http.post_x_www_form_urlencoded("https://web.lobi.co/api/me/remove/confirm", postData,
+				header);
+		token = gson.fromJson(token, FreeKV.class).get("remove_token");
+
+		postData = "remove_token=" + token;
+		header = new PostHeader()
+				.setHost("web.lobi.co")
+				.setConnection(true)
+				.setAccept("*/*")
+				.setUserAgent(
+						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4")
+				.setReferer("https://web.lobi.co/setting");
+		String data = Http.post_x_www_form_urlencoded("https://web.lobi.co/api/me/remove/complete", postData,
+				header);
+		return gson.fromJson(data, FreeKV.class).get("success").equals("1");
 	}
 
 	public static boolean checkAvailable() {
@@ -577,7 +612,7 @@ public class LobiServices {
 				.setAccept("*/*")
 				.setUserAgent(
 						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
-				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6");
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		try {
 			return !Http.get("https://web.lobi.co/", header).equals("slow down");

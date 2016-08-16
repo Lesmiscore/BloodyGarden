@@ -11,6 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Map;
 
 import com.nao20010128nao.BloodyGarden.network.Header.GetHeader;
 import com.nao20010128nao.BloodyGarden.network.Header.PostHeader;
@@ -38,37 +39,37 @@ public class Http {
 			HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
 			connection.setInstanceFollowRedirects(false);
 			connection.setRequestMethod("GET");
-			if (header.Host.equals(""))
+			if (!header.Host.equals(""))
 				connection.setRequestProperty("Host", header.Host);
-			if (header.Connection)
+			if (!header.Connection)
 				connection.setRequestProperty("Connection", "Keep-Alive");
-			if (header.Accept.equals(""))
+			if (!header.Accept.equals(""))
 				connection.setRequestProperty("Accept", header.Accept);
-			if (header.UserAgent.equals(""))
+			if (!header.UserAgent.equals(""))
 				connection.setRequestProperty("User-Agent", header.UserAgent);
-			if (header.Referer.equals(""))
+			if (!header.Referer.equals(""))
 				connection.setRequestProperty("Referer", header.Referer);
-			if (header.AcceptEncoding.equals(""))
+			if (!header.AcceptEncoding.equals(""))
 				connection.setRequestProperty("Accept-Encoding", header.AcceptEncoding);
-			if (header.AcceptLanguage.equals(""))
+			if (!header.AcceptLanguage.equals(""))
 				connection.setRequestProperty("Accept-Language", header.AcceptLanguage);
 
 			String location = connection.getHeaderField("Location");
 			if (location != null) {
 				GetHeader redirect_header = new GetHeader();
-				if (header.Host.equals(""))
+				if (!header.Host.equals(""))
 					redirect_header.setHost(header.Host);
-				if (header.Connection)
+				if (!header.Connection)
 					redirect_header.setConnection(header.Connection);
-				if (header.Accept.equals(""))
+				if (!header.Accept.equals(""))
 					redirect_header.setAccept(header.Accept);
-				if (header.UserAgent.equals(""))
+				if (!header.UserAgent.equals(""))
 					redirect_header.setUserAgent(header.UserAgent);
-				if (header.Referer.equals(""))
+				if (!header.Referer.equals(""))
 					redirect_header.setReferer(header.Referer);
-				if (header.AcceptEncoding.equals(""))
+				if (!header.AcceptEncoding.equals(""))
 					redirect_header.setAcceptEncoding(header.AcceptEncoding);
-				if (header.AcceptLanguage.equals(""))
+				if (!header.AcceptLanguage.equals(""))
 					redirect_header.setAcceptLanguage(header.AcceptLanguage);
 				result = get((location.indexOf("http") != 0 ? url.substring(0, url.lastIndexOf("/")) : "") + location,
 						redirect_header);
@@ -103,23 +104,23 @@ public class Http {
 			connection.setDoOutput(true);
 			connection.setInstanceFollowRedirects(false);
 			connection.setRequestMethod("POST");
-			if (header.Host.equals(""))
+			if (!header.Host.equals(""))
 				connection.setRequestProperty("Host", header.Host);
-			if (header.Connection)
+			if (!header.Connection)
 				connection.setRequestProperty("Connection", "Keep-Alive");
-			if (header.Accept.equals(""))
+			if (!header.Accept.equals(""))
 				connection.setRequestProperty("Accept", header.Accept);
-			if (header.Origin.equals(""))
+			if (!header.Origin.equals(""))
 				connection.setRequestProperty("Origin", header.Origin);
-			if (header.UserAgent.equals(""))
+			if (!header.UserAgent.equals(""))
 				connection.setRequestProperty("User-Agent", header.UserAgent);
-			if (header.ContentType.equals(""))
+			if (!header.ContentType.equals(""))
 				connection.setRequestProperty("Content-Type", header.ContentType);
-			if (header.Referer.equals(""))
+			if (!header.Referer.equals(""))
 				connection.setRequestProperty("Referer", header.Referer);
-			if (header.AcceptEncoding.equals(""))
+			if (!header.AcceptEncoding.equals(""))
 				connection.setRequestProperty("Accept-Encoding", header.AcceptEncoding);
-			if (header.AcceptLanguage.equals(""))
+			if (!header.AcceptLanguage.equals(""))
 				connection.setRequestProperty("Accept-Language", header.AcceptLanguage);
 
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "UTF-8"));
@@ -129,19 +130,19 @@ public class Http {
 			String location = connection.getHeaderField("Location");
 			if (location != null) {
 				GetHeader redirect_header = new GetHeader();
-				if (header.Host.equals(""))
+				if (!header.Host.equals(""))
 					redirect_header.setHost(header.Host);
-				if (header.Connection)
+				if (!header.Connection)
 					redirect_header.setConnection(header.Connection);
-				if (header.Accept.equals(""))
+				if (!header.Accept.equals(""))
 					redirect_header.setAccept(header.Accept);
-				if (header.UserAgent.equals(""))
+				if (!header.UserAgent.equals(""))
 					redirect_header.setUserAgent(header.UserAgent);
-				if (header.Referer.equals(""))
+				if (!header.Referer.equals(""))
 					redirect_header.setReferer(header.Referer);
-				if (header.AcceptEncoding.equals(""))
+				if (!header.AcceptEncoding.equals(""))
 					redirect_header.setAcceptEncoding(header.AcceptEncoding);
-				if (header.AcceptLanguage.equals(""))
+				if (!header.AcceptLanguage.equals(""))
 					redirect_header.setAcceptLanguage(header.AcceptLanguage);
 				result = get((location.indexOf("http") != 0 ? url.substring(0, url.lastIndexOf("/")) : "") + location,
 						redirect_header);
@@ -176,22 +177,22 @@ public class Http {
 			connection.setDoOutput(true);
 			connection.setInstanceFollowRedirects(false);
 			connection.setRequestMethod("POST");
-			if (header.Host.equals(""))
+			if (!header.Host.equals(""))
 				connection.setRequestProperty("Host", header.Host);
-			if (header.Connection)
+			if (!header.Connection)
 				connection.setRequestProperty("Connection", "Keep-Alive");
-			if (header.Accept.equals(""))
+			if (!header.Accept.equals(""))
 				connection.setRequestProperty("Accept", header.Accept);
-			if (header.Origin.equals(""))
+			if (!header.Origin.equals(""))
 				connection.setRequestProperty("Origin", header.Origin);
-			if (header.UserAgent.equals(""))
+			if (!header.UserAgent.equals(""))
 				connection.setRequestProperty("User-Agent", header.UserAgent);
 			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			if (header.Referer.equals(""))
+			if (!header.Referer.equals(""))
 				connection.setRequestProperty("Referer", header.Referer);
-			if (header.AcceptEncoding.equals(""))
+			if (!header.AcceptEncoding.equals(""))
 				connection.setRequestProperty("Accept-Encoding", header.AcceptEncoding);
-			if (header.AcceptLanguage.equals(""))
+			if (!header.AcceptLanguage.equals(""))
 				connection.setRequestProperty("Accept-Language", header.AcceptLanguage);
 
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "UTF-8"));
@@ -201,19 +202,18 @@ public class Http {
 			String location = connection.getHeaderField("Location");
 			if (location != null) {
 				GetHeader redirect_header = new GetHeader();
-				if (header.Host.equals(""))
+				if (!header.Host.equals(""))
 					redirect_header.setHost(header.Host);
-				if (header.Connection)
-					redirect_header.setConnection(header.Connection);
-				if (header.Accept.equals(""))
+				redirect_header.setConnection(header.Connection);
+				if (!header.Accept.equals(""))
 					redirect_header.setAccept(header.Accept);
-				if (header.UserAgent.equals(""))
+				if (!header.UserAgent.equals(""))
 					redirect_header.setUserAgent(header.UserAgent);
-				if (header.Referer.equals(""))
+				if (!header.Referer.equals(""))
 					redirect_header.setReferer(header.Referer);
-				if (header.AcceptEncoding.equals(""))
+				if (!header.AcceptEncoding.equals(""))
 					redirect_header.setAcceptEncoding(header.AcceptEncoding);
-				if (header.AcceptLanguage.equals(""))
+				if (!header.AcceptLanguage.equals(""))
 					redirect_header.setAcceptLanguage(header.AcceptLanguage);
 				result = get((location.indexOf("http") != 0 ? url.substring(0, url.lastIndexOf("/")) : "") + location,
 						redirect_header);
@@ -241,34 +241,35 @@ public class Http {
 		return result;
 	}
 
-	public static String post_form_data(String url, String boundary, String[] data, PostHeader header) {
+	public static String post_form_data(String url, String boundary, Map<String, String> data, PostHeader header) {
 		String result = "";
 		try {
 			String post_data = "";
-			for (String cdata : data)
-				post_data += "--" + boundary + "\r\n" + cdata + "\r\n";
+			for (String cdata : data.keySet())
+				post_data += "--" + boundary + "\r\n" + "Content-Disposition: form-data; name=\"" + cdata + "\""
+						+ "\r\n" + "\r\n" + data.get(cdata) + "\r\n";
 
 			URI uri = new URI(url);
 			HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
 			connection.setDoOutput(true);
 			connection.setInstanceFollowRedirects(false);
 			connection.setRequestMethod("POST");
-			if (header.Host.equals(""))
+			if (!header.Host.equals(""))
 				connection.setRequestProperty("Host", header.Host);
-			if (header.Connection)
+			if (!header.Connection)
 				connection.setRequestProperty("Connection", "Keep-Alive");
-			if (header.Accept.equals(""))
+			if (!header.Accept.equals(""))
 				connection.setRequestProperty("Accept", header.Accept);
-			if (header.Origin.equals(""))
+			if (!header.Origin.equals(""))
 				connection.setRequestProperty("Origin", header.Origin);
-			if (header.UserAgent.equals(""))
+			if (!header.UserAgent.equals(""))
 				connection.setRequestProperty("User-Agent", header.UserAgent);
 			connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
-			if (header.Referer.equals(""))
+			if (!header.Referer.equals(""))
 				connection.setRequestProperty("Referer", header.Referer);
-			if (header.AcceptEncoding.equals(""))
+			if (!header.AcceptEncoding.equals(""))
 				connection.setRequestProperty("Accept-Encoding", header.AcceptEncoding);
-			if (header.AcceptLanguage.equals(""))
+			if (!header.AcceptLanguage.equals(""))
 				connection.setRequestProperty("Accept-Language", header.AcceptLanguage);
 
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "UTF-8"));
@@ -278,19 +279,19 @@ public class Http {
 			String location = connection.getHeaderField("Location");
 			if (location != null) {
 				GetHeader redirect_header = new GetHeader();
-				if (header.Host.equals(""))
+				if (!header.Host.equals(""))
 					redirect_header.setHost(header.Host);
-				if (header.Connection)
+				if (!header.Connection)
 					redirect_header.setConnection(header.Connection);
-				if (header.Accept.equals(""))
+				if (!header.Accept.equals(""))
 					redirect_header.setAccept(header.Accept);
-				if (header.UserAgent.equals(""))
+				if (!header.UserAgent.equals(""))
 					redirect_header.setUserAgent(header.UserAgent);
-				if (header.Referer.equals(""))
+				if (!header.Referer.equals(""))
 					redirect_header.setReferer(header.Referer);
-				if (header.AcceptEncoding.equals(""))
+				if (!header.AcceptEncoding.equals(""))
 					redirect_header.setAcceptEncoding(header.AcceptEncoding);
-				if (header.AcceptLanguage.equals(""))
+				if (!header.AcceptLanguage.equals(""))
 					redirect_header.setAcceptLanguage(header.AcceptLanguage);
 				result = get((location.indexOf("http") != 0 ? url.substring(0, url.lastIndexOf("/")) : "") + location,
 						redirect_header);
