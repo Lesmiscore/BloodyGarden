@@ -628,4 +628,34 @@ public class LobiServices {
 			return null;
 		}
 	}
+
+	public static boolean makeNewAccount(String mail, String password) {
+		GetHeader header1 = new GetHeader()
+				.setHost("lobi.co")
+				.setConnection(true)
+				.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
+				.setUserAgent(
+						"Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5 Build/MOB30Y) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.85 Mobile Safari/537.36")
+				.setAcceptLanguage("ja");
+		String source = Http.get("https://lobi.co/inapp/signup/password", header1);
+		String csrf_token = Jsoup.parse(source).select("input[name=\"csrf_token\"]").get(0).attr("value");
+
+		String post_data = String.format("csrf_token=%s&email=%s&password=%s&password_confirm=%s", csrf_token,
+				encode(mail),
+				password,
+				password);
+		PostHeader header2 = new PostHeader()
+				.setHost("lobi.co")
+				.setConnection(true)
+				.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
+				.setUserAgent(
+						"Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5 Build/MOB30Y) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.85 Mobile Safari/537.36")
+				.setAcceptLanguage("ja")
+				.setOrigin("https://lobi.co")
+				.setReferer("https://lobi.co/inapp/signup/password");
+
+		String result = Http.post_x_www_form_urlencoded("https://lobi.co/inapp/signup/password", post_data, header2);
+		System.out.println(result);
+		return result.indexOf("仮登録完了") == -1 & !hasLoginFields(Jsoup.parse(result));
+	}
 }
