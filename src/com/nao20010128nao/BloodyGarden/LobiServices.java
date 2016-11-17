@@ -655,6 +655,6 @@ public class LobiServices {
 				.setReferer("https://lobi.co/inapp/signup/password");
 
 		String result = Http.post_x_www_form_urlencoded("https://lobi.co/inapp/signup/password", post_data, header2);
-		return result.indexOf("仮登録完了") == -1 & !hasLoginFields(Jsoup.parse(result));
+		return result.indexOf("仮登録完了") == -1 | !hasLoginFields(Jsoup.parse(result));
 	}
 }
