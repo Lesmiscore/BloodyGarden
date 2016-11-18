@@ -1,6 +1,9 @@
 package com.nao20010128nao.BloodyGarden;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +13,7 @@ import org.jsoup.nodes.Document;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.nao20010128nao.BloodyGarden.network.Http;
 import com.nao20010128nao.BloodyGarden.network.Header.GetHeader;
@@ -32,18 +36,19 @@ import com.nao20010128nao.BloodyGarden.structures.User;
 
 public class LobiServices {
 	private Gson gson = new Gson();
+	public static String PC_USER_AGENT = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36";
+	public static String MOBILE_USER_AGENT = "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5 Build/MOB30Y) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.85 Mobile Safari/537.36";
 
 	public LobiServices() {
 
 	}
 
-	public boolean login(String mail, String password) {
+	public boolean login(String mail, String password) throws MalformedURLException, URISyntaxException, IOException {
 		GetHeader header1 = new GetHeader()
 				.setHost("lobi.co")
 				.setConnection(true)
 				.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja");
 		String source = Http.get("https://lobi.co/signin", header1);
 		String csrf_token = Jsoup.parse(source).select("input[name=\"csrf_token\"]").get(0).attr("value");
@@ -54,8 +59,7 @@ public class LobiServices {
 				.setHost("lobi.co")
 				.setConnection(true)
 				.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja")
 				.setOrigin("https://lobi.co")
 				.setReferer("https://lobi.co/signin");
@@ -71,13 +75,13 @@ public class LobiServices {
 				& !hasLoginFields(Jsoup.parse(result));
 	}
 
-	public boolean twitterLogin(String mail, String password) {
+	public boolean twitterLogin(String mail, String password)
+			throws MalformedURLException, IOException, URISyntaxException {
 		GetHeader header1 = new GetHeader()
 				.setHost("lobi.co")
 				.setConnection(true)
 				.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 		String source = Http.get("https://lobi.co/signup/twitter", header1);
 		Document sourceDom = Jsoup.parse(source);
@@ -92,8 +96,7 @@ public class LobiServices {
 				.setHost("api.twitter.com")
 				.setConnection(true)
 				.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4")
 				.setOrigin("https://api.twitter.com");
 
@@ -120,13 +123,12 @@ public class LobiServices {
 		return true;
 	}
 
-	public Me getMe() {
+	public Me getMe() throws MalformedURLException, IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		try {
@@ -138,13 +140,12 @@ public class LobiServices {
 		return null;
 	}
 
-	public PublicGroups getPublicGroupList() {
+	public PublicGroups getPublicGroupList() throws MalformedURLException, IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		List<PublicGroups> result = new ArrayList<PublicGroups>();
@@ -167,13 +168,12 @@ public class LobiServices {
 		return null;
 	}
 
-	public PrivateGroups getPrivateGroupList() {
+	public PrivateGroups getPrivateGroupList() throws MalformedURLException, IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		List<PrivateGroups> result = new ArrayList<PrivateGroups>();
@@ -196,13 +196,12 @@ public class LobiServices {
 		return null;
 	}
 
-	public Notifications getNotifications() {
+	public Notifications getNotifications() throws MalformedURLException, IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		try {
@@ -215,13 +214,12 @@ public class LobiServices {
 		return null;
 	}
 
-	public Contacts getContacts(String uid) {
+	public Contacts getContacts(String uid) throws MalformedURLException, IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		try {
@@ -233,13 +231,12 @@ public class LobiServices {
 		return null;
 	}
 
-	public Followers getFollowers(String uid) {
+	public Followers getFollowers(String uid) throws MalformedURLException, IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		try {
@@ -251,13 +248,12 @@ public class LobiServices {
 		return null;
 	}
 
-	public Group getGroup(String uid) {
+	public Group getGroup(String uid) throws MalformedURLException, IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		try {
@@ -273,13 +269,12 @@ public class LobiServices {
 		return null;
 	}
 
-	public int getGroupMembersCount(String uid) {
+	public int getGroupMembersCount(String uid) throws MalformedURLException, IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		try {
@@ -294,13 +289,12 @@ public class LobiServices {
 		return -1;
 	}
 
-	public User[] getGroupMembers(String uid) {
+	public User[] getGroupMembers(String uid) throws MalformedURLException, IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		List<User> result = new ArrayList<User>();
@@ -324,13 +318,12 @@ public class LobiServices {
 		return result.toArray(new User[0]);
 	}
 
-	public Chat[] getThread(String uid, int count) {
+	public Chat[] getThread(String uid, int count) throws MalformedURLException, IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		try {
@@ -345,13 +338,12 @@ public class LobiServices {
 		return null;
 	}
 
-	public Pokes getPokes(String groupId, String chatId) {
+	public Pokes getPokes(String groupId, String chatId) throws MalformedURLException, IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		try {
@@ -365,13 +357,12 @@ public class LobiServices {
 		return null;
 	}
 
-	public Bookmarks getBookmarks() {
+	public Bookmarks getBookmarks() throws MalformedURLException, IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		try {
@@ -384,13 +375,12 @@ public class LobiServices {
 		return null;
 	}
 
-	public void good(String group_id, String chat_id) {
+	public void good(String group_id, String chat_id) throws MalformedURLException, URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		String post_data = "id=" + chat_id;
@@ -398,13 +388,12 @@ public class LobiServices {
 				"https://web.lobi.co/api/group/" + group_id + "/chats/like", post_data, header);
 	}
 
-	public void unGood(String group_id, String chat_id) {
+	public void unGood(String group_id, String chat_id) throws MalformedURLException, URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		String post_data = "id=" + chat_id;
@@ -412,13 +401,12 @@ public class LobiServices {
 				"https://web.lobi.co/api/group/" + group_id + "/chats/unlike", post_data, header);
 	}
 
-	public void bad(String group_id, String chat_id) {
+	public void bad(String group_id, String chat_id) throws MalformedURLException, URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		String post_data = "id=" + chat_id;
@@ -426,13 +414,12 @@ public class LobiServices {
 				"https://web.lobi.co/api/group/" + group_id + "/chats/like", post_data, header);
 	}
 
-	public void unBad(String group_id, String chat_id) {
+	public void unBad(String group_id, String chat_id) throws MalformedURLException, URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		String post_data = "id=" + chat_id;
@@ -440,26 +427,24 @@ public class LobiServices {
 				"https://web.lobi.co/api/group/" + group_id + "/chats/unlike", post_data, header);
 	}
 
-	public void follow(String user_id) {
+	public void follow(String user_id) throws MalformedURLException, URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		String post_data = "users=" + user_id;
 		Http.post_x_www_form_urlencoded("https://web.lobi.co/api/me/contacts", post_data, header);
 	}
 
-	public void unFollow(String user_id) {
+	public void unFollow(String user_id) throws MalformedURLException, URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		String post_data = "users=" + user_id;
@@ -467,13 +452,13 @@ public class LobiServices {
 	}
 
 	// Original name is "MakeThread"
-	public com.nao20010128nao.BloodyGarden.structures.Thread newThread(String group_id, String message, boolean shout) {
+	public com.nao20010128nao.BloodyGarden.structures.Thread newThread(String group_id, String message, boolean shout)
+			throws MalformedURLException, URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4")
 				.setReferer("https://web.lobi.co/group/" + group_id);
 
@@ -483,13 +468,13 @@ public class LobiServices {
 		return gson.fromJson(result, com.nao20010128nao.BloodyGarden.structures.Thread.class);
 	}
 
-	public void reply(String group_id, String thread_id, String message) {
+	public void reply(String group_id, String thread_id, String message)
+			throws MalformedURLException, URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		String post_data = "type=normal&lang=ja&message=" + encode(message) + "&reply_to=" + thread_id;
@@ -498,13 +483,12 @@ public class LobiServices {
 	}
 
 	// Original name is "RemoveGroup"
-	public void deleteGroup(String group_id) {
+	public void deleteGroup(String group_id) throws MalformedURLException, URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		String post_data = "";
@@ -513,13 +497,13 @@ public class LobiServices {
 	}
 
 	// Original name is "MakePrivateThread"
-	public MakePrivateGroupResult newPrivateThread(String user_id) {
+	public MakePrivateGroupResult newPrivateThread(String user_id)
+			throws JsonSyntaxException, MalformedURLException, URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		String post_data = "user=" + user_id;
@@ -528,26 +512,26 @@ public class LobiServices {
 						header), MakePrivateGroupResult.class);
 	}
 
-	public void changeProfile(String name, String description) {
+	public void changeProfile(String name, String description)
+			throws MalformedURLException, URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		String post_data = "name=" + encode(name) + "&description=" + encode(description);
 		Http.post_x_www_form_urlencoded("https://web.lobi.co/api/me/profile", post_data, header);
 	}
 
-	public MakePublicGroupResult newPublicGroup(String name, String desc, String game) {
+	public MakePublicGroupResult newPublicGroup(String name, String desc, String game)
+			throws MalformedURLException, URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("application/json, text/plain, */*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4")
 				.setReferer("https://web.lobi.co/home/public-group");
 
@@ -562,13 +546,13 @@ public class LobiServices {
 		}
 	}
 
-	public GameSearchResult searchGame(String keyword, int page) {
+	public GameSearchResult searchGame(String keyword, int page)
+			throws JsonSyntaxException, MalformedURLException, IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("*/*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		return gson.fromJson(
@@ -576,13 +560,12 @@ public class LobiServices {
 				GameSearchResult.class);
 	}
 
-	public boolean deleteAccount() {
+	public boolean deleteAccount() throws MalformedURLException, URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("*/*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4")
 				.setReferer("https://web.lobi.co/setting");
 
@@ -596,8 +579,7 @@ public class LobiServices {
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("*/*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4")
 				.setReferer("https://web.lobi.co/setting");
 		String data = Http.post_x_www_form_urlencoded("https://web.lobi.co/api/me/remove/complete", postData,
@@ -610,12 +592,11 @@ public class LobiServices {
 				.setHost("web.lobi.co")
 				.setConnection(true)
 				.setAccept("*/*")
-				.setUserAgent(
-						"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36")
+				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
 		try {
-			return !Http.get("https://web.lobi.co/", header).equals("slow down");
+			return !Http.get("https://web.lobi.co/", header).equalsIgnoreCase("slow down");
 		} catch (Exception e) {
 			return false;
 		}
@@ -629,13 +610,13 @@ public class LobiServices {
 		}
 	}
 
-	public static boolean makeNewAccount(String mail, String password) {
+	public static boolean makeNewAccount(String mail, String password)
+			throws MalformedURLException, IOException, URISyntaxException {
 		GetHeader header1 = new GetHeader()
 				.setHost("lobi.co")
 				.setConnection(true)
 				.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
-				.setUserAgent(
-						"Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5 Build/MOB30Y) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.85 Mobile Safari/537.36")
+				.setUserAgent(MOBILE_USER_AGENT)
 				.setAcceptLanguage("ja");
 		String source = Http.get("https://lobi.co/inapp/signup/password", header1);
 		String csrf_token = Jsoup.parse(source).select("input[name=\"csrf_token\"]").get(0).attr("value");
@@ -648,8 +629,7 @@ public class LobiServices {
 				.setHost("lobi.co")
 				.setConnection(true)
 				.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
-				.setUserAgent(
-						"Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5 Build/MOB30Y) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.85 Mobile Safari/537.36")
+				.setUserAgent(MOBILE_USER_AGENT)
 				.setAcceptLanguage("ja")
 				.setOrigin("https://lobi.co")
 				.setReferer("https://lobi.co/inapp/signup/password");
