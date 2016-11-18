@@ -1,10 +1,10 @@
 package com.nao20010128nao.BloodyGarden;
 
+import static com.nao20010128nao.BloodyGarden.Utils.*;
+
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,12 +65,6 @@ public class LobiServices {
 				.setReferer("https://lobi.co/signin");
 
 		String result = Http.post_x_www_form_urlencoded("https://lobi.co/signin", post_data, header2);
-		try {
-			Class.forName("android.util.Log").getMethod("d", String.class, String.class).invoke(null, "login_data",
-					result);
-		} catch (Throwable e) {
-
-		}
 		return result.indexOf("ログインに失敗しました") == -1 & result.indexOf("failed signin") == -1
 				& !hasLoginFields(Jsoup.parse(result));
 	}
@@ -108,19 +102,6 @@ public class LobiServices {
 		String result = Http.get(source2Dom.select("a.maintain-context").get(0).text(), header1);
 		return result.indexOf("ログインに失敗しました") == -1 & result.indexOf("failed signin") == -1
 				& !hasLoginFields(Jsoup.parse(result));
-	}
-
-	private static boolean hasLoginFields(Document doc) {
-		if (doc.select(
-				"div.input--mail__wrapper," +
-						"div.input--password__wrapper," +
-						"input.input--email," +
-						"input.input--password," +
-						"input#input--email," +
-						"input#input--password")
-				.isEmpty())
-			return false;
-		return true;
 	}
 
 	public Me getMe() throws MalformedURLException, IOException, URISyntaxException {
@@ -315,7 +296,7 @@ public class LobiServices {
 			} catch (JsonParseException e) {
 				e.printStackTrace();
 			}
-		return result.toArray(new User[0]);
+		return result.toArray(new User[result.size()]);
 	}
 
 	public Chat[] getThread(String uid, int count) throws MalformedURLException, IOException, URISyntaxException {
@@ -331,7 +312,7 @@ public class LobiServices {
 					Http.get("https://web.lobi.co/api/group/" + uid + "/chats?count=" + count, header),
 					new TypeToken<List<Chat>>() {
 					}.getType());
-			return result.toArray(new Chat[0]);
+			return result.toArray(new Chat[result.size()]);
 		} catch (JsonParseException e) {
 			e.printStackTrace();
 		}
@@ -599,14 +580,6 @@ public class LobiServices {
 			return !Http.get("https://web.lobi.co/", header).equalsIgnoreCase("slow down");
 		} catch (Exception e) {
 			return false;
-		}
-	}
-
-	private static String encode(String s) {
-		try {
-			return URLEncoder.encode(s, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			return null;
 		}
 	}
 
