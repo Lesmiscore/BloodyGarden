@@ -1,2 +1,9 @@
-/bin/
-/target/
+app/build/*
+.gradle/
+build/
+local.properties
+*~
+~*
+*#*#
+libs/
+test/
