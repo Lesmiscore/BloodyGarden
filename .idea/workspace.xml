@@ -78,8 +78,8 @@
       <file leaf-file-name="LobiServices.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/nao20010128nao/BloodyGarden/LobiServices.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3791">
-              <caret line="176" column="33" lean-forward="true" selection-start-line="176" selection-start-column="33" selection-end-line="176" selection-end-column="33" />
+            <state relative-caret-position="-687">
+              <caret line="553" column="37" lean-forward="false" selection-start-line="553" selection-start-column="37" selection-end-line="553" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -880,10 +880,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/nao20010128nao/BloodyGarden/structures/FreeKV.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="13" lean-forward="false" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/nao20010128nao/BloodyGarden/LobiServices.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3791">
-          <caret line="176" column="33" lean-forward="true" selection-start-line="176" selection-start-column="33" selection-end-line="176" selection-end-column="33" />
+        <state relative-caret-position="-687">
+          <caret line="553" column="37" lean-forward="false" selection-start-line="553" selection-start-column="37" selection-end-line="553" selection-end-column="37" />
           <folding />
         </state>
       </provider>

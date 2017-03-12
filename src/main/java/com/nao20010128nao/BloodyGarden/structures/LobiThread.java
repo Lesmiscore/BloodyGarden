@@ -1,6 +1,6 @@
 package com.nao20010128nao.BloodyGarden.structures;
 
-public class Thread {
+public class LobiThread {
 	public Integer bookmarks_count;
 	public Integer likes_count;
 	public Integer boos_count;

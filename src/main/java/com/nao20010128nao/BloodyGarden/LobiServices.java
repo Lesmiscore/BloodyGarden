@@ -4,11 +4,11 @@ import static com.nao20010128nao.BloodyGarden.Utils.*;
 
 import java.io.IOException;
 import java.net.HttpCookie;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.nao20010128nao.BloodyGarden.structures.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -19,21 +19,6 @@ import com.google.gson.reflect.TypeToken;
 import com.nao20010128nao.BloodyGarden.network.Http;
 import com.nao20010128nao.BloodyGarden.network.Header.GetHeader;
 import com.nao20010128nao.BloodyGarden.network.Header.PostHeader;
-import com.nao20010128nao.BloodyGarden.structures.Bookmarks;
-import com.nao20010128nao.BloodyGarden.structures.Chat;
-import com.nao20010128nao.BloodyGarden.structures.Contacts;
-import com.nao20010128nao.BloodyGarden.structures.Followers;
-import com.nao20010128nao.BloodyGarden.structures.FreeKV;
-import com.nao20010128nao.BloodyGarden.structures.GameSearchResult;
-import com.nao20010128nao.BloodyGarden.structures.Group;
-import com.nao20010128nao.BloodyGarden.structures.MakePrivateGroupResult;
-import com.nao20010128nao.BloodyGarden.structures.MakePublicGroupResult;
-import com.nao20010128nao.BloodyGarden.structures.Me;
-import com.nao20010128nao.BloodyGarden.structures.Notifications;
-import com.nao20010128nao.BloodyGarden.structures.Pokes;
-import com.nao20010128nao.BloodyGarden.structures.PrivateGroups;
-import com.nao20010128nao.BloodyGarden.structures.PublicGroups;
-import com.nao20010128nao.BloodyGarden.structures.User;
 
 public class LobiServices {
 	private Gson gson = new Gson();
@@ -434,7 +419,7 @@ public class LobiServices {
 	}
 
 	// Original name is "MakeThread"
-	public com.nao20010128nao.BloodyGarden.structures.Thread newThread(String group_id, String message, boolean shout)
+	public LobiThread newThread(String group_id, String message, boolean shout)
 			throws URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
@@ -447,7 +432,7 @@ public class LobiServices {
 		String postData = "type=" + (shout ? "shout" : "normal") + "&lang=ja&message=" + encode(message);
 		String result = Http.post_x_www_form_urlencoded("https://web.lobi.co/api/group/" + group_id + "/chats",
 				postData, header);
-		return gson.fromJson(result, com.nao20010128nao.BloodyGarden.structures.Thread.class);
+		return gson.fromJson(result, LobiThread.class);
 	}
 
 	public void reply(String group_id, String thread_id, String message)
