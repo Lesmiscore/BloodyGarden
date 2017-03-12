@@ -268,7 +268,7 @@ public class LobiServices {
 		List<User> result = new ArrayList<>();
 		String next = "0";
 		int limit = 10000;
-		while (limit-- > 0)
+		while (limit-- > 0) {
 			try {
 				Group g = gson.fromJson(
 						Http.get("https://web.lobi.co/api/group/" + uid + "?members_cursor=" + next, header),
@@ -282,6 +282,7 @@ public class LobiServices {
 			} catch (JsonParseException e) {
 				e.printStackTrace();
 			}
+		}
 		return result.toArray(new User[result.size()]);
 	}
 

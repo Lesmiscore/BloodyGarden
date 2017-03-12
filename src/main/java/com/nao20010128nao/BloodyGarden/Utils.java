@@ -15,16 +15,14 @@ final class Utils {
 	}
 
 	static boolean hasLoginFields(Document doc) {
-		if (doc.select(
+		return !doc.select(
 				"div.input--mail__wrapper," +
 						"div.input--password__wrapper," +
 						"input.input--email," +
 						"input.input--password," +
 						"input#input--email," +
 						"input#input--password")
-				.isEmpty())
-			return false;
-		return true;
+				.isEmpty();
 	}
 
 }
