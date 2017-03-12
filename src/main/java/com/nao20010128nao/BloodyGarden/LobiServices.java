@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.HttpCookie;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.nao20010128nao.BloodyGarden.structures.*;
@@ -51,7 +52,7 @@ public class LobiServices {
 				.setReferer("https://lobi.co/signin");
 
 		String result = Http.post_x_www_form_urlencoded("https://lobi.co/signin", post_data, header2);
-		return result.indexOf("ログインに失敗しました") == -1 & result.indexOf("failed signin") == -1
+		return !result.contains("ログインに失敗しました") & !result.contains("failed signin")
 				& !hasLoginFields(Jsoup.parse(result));
 	}
 
@@ -82,11 +83,11 @@ public class LobiServices {
 
 		String source2 = Http.post_x_www_form_urlencoded("https://api.twitter.com/oauth/authorize",
 				post_data, header2);
-		if (source2.indexOf("Twitterにログイン") > -1)
+		if (source2.contains("Twitterにログイン"))
 			return false;
 		Document source2Dom = Jsoup.parse(source2);
 		String result = Http.get(source2Dom.select("a.maintain-context").get(0).text(), header1);
-		return result.indexOf("ログインに失敗しました") == -1 & result.indexOf("failed signin") == -1
+		return !result.contains("ログインに失敗しました") & !result.contains("failed signin")
 				& !hasLoginFields(Jsoup.parse(result));
 	}
 
@@ -115,7 +116,7 @@ public class LobiServices {
 				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
-		List<PublicGroups> result = new ArrayList<PublicGroups>();
+		List<PublicGroups> result = new ArrayList<>();
 		int index = 1;
 		while (true)
 			try {
@@ -143,7 +144,7 @@ public class LobiServices {
 				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
-		List<PrivateGroups> result = new ArrayList<PrivateGroups>();
+		List<PrivateGroups> result = new ArrayList<>();
 		int index = 1;
 		while (true)
 			try {
@@ -249,7 +250,7 @@ public class LobiServices {
 					Http.get("https://web.lobi.co/api/group/" + uid
 							+ "?error_flavor=json2&fields=group_bookmark_info%2Capp_events_info", header),
 					Group.class).members_count;
-			return result == null ? 0 : (int) result;
+			return result == null ? 0 : result;
 		} catch (JsonParseException e) {
 			e.printStackTrace();
 		}
@@ -264,7 +265,7 @@ public class LobiServices {
 				.setUserAgent(PC_USER_AGENT)
 				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4");
 
-		List<User> result = new ArrayList<User>();
+		List<User> result = new ArrayList<>();
 		String next = "0";
 		int limit = 10000;
 		while (limit-- > 0)
@@ -272,8 +273,7 @@ public class LobiServices {
 				Group g = gson.fromJson(
 						Http.get("https://web.lobi.co/api/group/" + uid + "?members_cursor=" + next, header),
 						Group.class);
-				for (User user : g.members)
-					result.add(user);
+				Collections.addAll(result, g.members);
 				if (g.members_next_cursor == null)
 					break;
 				if (g.members_next_cursor == 0)
