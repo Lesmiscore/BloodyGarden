@@ -3,6 +3,7 @@ package com.nao20010128nao.BloodyGarden;
 import static com.nao20010128nao.BloodyGarden.Utils.*;
 
 import java.io.IOException;
+import java.net.HttpCookie;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -566,6 +567,26 @@ public class LobiServices {
 		String data = Http.post_x_www_form_urlencoded("https://web.lobi.co/api/me/remove/complete", postData,
 				header);
 		return gson.fromJson(data, FreeKV.class).get("success").equals("1");
+	}
+
+	public void joinGroup(String group) throws IOException, URISyntaxException {
+		PostHeader header=new PostHeader()
+				.setHost("web.lobi.co")
+				.setConnection(true)
+				.setAccept("application/json, text/plain, */*")
+				.setUserAgent(PC_USER_AGENT)
+				.setAcceptLanguage("ja,en-US;q=0.8,en;q=0.6,fr;q=0.4")
+				.setReferer("https://web.lobi.co/group/"+group);
+		String installId=null;
+
+		for(HttpCookie cookie:Http.cookie.getCookieStore().getCookies()){
+			if("web.lobi.co".equals(cookie.getDomain())&"installId".equals(cookie.getName())){
+				installId=cookie.getValue();
+			}
+		}
+
+		// TODO: parse json to identify status
+		Http.post_x_www_form_urlencoded("https://web.lobi.co/api/group/"+group+"/join","install_id="+installId+"&platform=any",header);
 	}
 
 	public static boolean checkAvailable() {
