@@ -44,7 +44,7 @@ public class LobiServices {
 
 	}
 
-	public boolean login(String mail, String password) throws MalformedURLException, URISyntaxException, IOException {
+	public boolean login(String mail, String password) throws URISyntaxException, IOException {
 		GetHeader header1 = new GetHeader()
 				.setHost("lobi.co")
 				.setConnection(true)
@@ -71,7 +71,7 @@ public class LobiServices {
 	}
 
 	public boolean twitterLogin(String mail, String password)
-			throws MalformedURLException, IOException, URISyntaxException {
+			throws IOException, URISyntaxException {
 		GetHeader header1 = new GetHeader()
 				.setHost("lobi.co")
 				.setConnection(true)
@@ -105,7 +105,7 @@ public class LobiServices {
 				& !hasLoginFields(Jsoup.parse(result));
 	}
 
-	public Me getMe() throws MalformedURLException, IOException, URISyntaxException {
+	public Me getMe() throws IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -122,7 +122,7 @@ public class LobiServices {
 		return null;
 	}
 
-	public PublicGroups getPublicGroupList() throws MalformedURLException, IOException, URISyntaxException {
+	public PublicGroups getPublicGroupList() throws IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -150,7 +150,7 @@ public class LobiServices {
 		return null;
 	}
 
-	public PrivateGroups getPrivateGroupList() throws MalformedURLException, IOException, URISyntaxException {
+	public PrivateGroups getPrivateGroupList() throws IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -178,7 +178,7 @@ public class LobiServices {
 		return null;
 	}
 
-	public Notifications getNotifications() throws MalformedURLException, IOException, URISyntaxException {
+	public Notifications getNotifications() throws IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -196,7 +196,7 @@ public class LobiServices {
 		return null;
 	}
 
-	public Contacts getContacts(String uid) throws MalformedURLException, IOException, URISyntaxException {
+	public Contacts getContacts(String uid) throws IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -213,7 +213,7 @@ public class LobiServices {
 		return null;
 	}
 
-	public Followers getFollowers(String uid) throws MalformedURLException, IOException, URISyntaxException {
+	public Followers getFollowers(String uid) throws IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -230,7 +230,7 @@ public class LobiServices {
 		return null;
 	}
 
-	public Group getGroup(String uid) throws MalformedURLException, IOException, URISyntaxException {
+	public Group getGroup(String uid) throws IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -251,7 +251,7 @@ public class LobiServices {
 		return null;
 	}
 
-	public int getGroupMembersCount(String uid) throws MalformedURLException, IOException, URISyntaxException {
+	public int getGroupMembersCount(String uid) throws IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -271,7 +271,7 @@ public class LobiServices {
 		return -1;
 	}
 
-	public User[] getGroupMembers(String uid) throws MalformedURLException, IOException, URISyntaxException {
+	public User[] getGroupMembers(String uid) throws IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -300,7 +300,7 @@ public class LobiServices {
 		return result.toArray(new User[result.size()]);
 	}
 
-	public Chat[] getThread(String uid, int count) throws MalformedURLException, IOException, URISyntaxException {
+	public Chat[] getThread(String uid, int count) throws IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -320,7 +320,7 @@ public class LobiServices {
 		return null;
 	}
 
-	public Pokes getPokes(String groupId, String chatId) throws MalformedURLException, IOException, URISyntaxException {
+	public Pokes getPokes(String groupId, String chatId) throws IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -339,7 +339,7 @@ public class LobiServices {
 		return null;
 	}
 
-	public Bookmarks getBookmarks() throws MalformedURLException, IOException, URISyntaxException {
+	public Bookmarks getBookmarks() throws IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -357,7 +357,7 @@ public class LobiServices {
 		return null;
 	}
 
-	public void good(String group_id, String chat_id) throws MalformedURLException, URISyntaxException, IOException {
+	public void good(String group_id, String chat_id) throws URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -370,7 +370,7 @@ public class LobiServices {
 				"https://web.lobi.co/api/group/" + group_id + "/chats/like", post_data, header);
 	}
 
-	public void unGood(String group_id, String chat_id) throws MalformedURLException, URISyntaxException, IOException {
+	public void unGood(String group_id, String chat_id) throws URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -383,7 +383,7 @@ public class LobiServices {
 				"https://web.lobi.co/api/group/" + group_id + "/chats/unlike", post_data, header);
 	}
 
-	public void bad(String group_id, String chat_id) throws MalformedURLException, URISyntaxException, IOException {
+	public void bad(String group_id, String chat_id) throws URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -396,7 +396,7 @@ public class LobiServices {
 				"https://web.lobi.co/api/group/" + group_id + "/chats/like", post_data, header);
 	}
 
-	public void unBad(String group_id, String chat_id) throws MalformedURLException, URISyntaxException, IOException {
+	public void unBad(String group_id, String chat_id) throws URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -409,7 +409,7 @@ public class LobiServices {
 				"https://web.lobi.co/api/group/" + group_id + "/chats/unlike", post_data, header);
 	}
 
-	public void follow(String user_id) throws MalformedURLException, URISyntaxException, IOException {
+	public void follow(String user_id) throws URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -421,7 +421,7 @@ public class LobiServices {
 		Http.post_x_www_form_urlencoded("https://web.lobi.co/api/me/contacts", post_data, header);
 	}
 
-	public void unFollow(String user_id) throws MalformedURLException, URISyntaxException, IOException {
+	public void unFollow(String user_id) throws URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -435,7 +435,7 @@ public class LobiServices {
 
 	// Original name is "MakeThread"
 	public com.nao20010128nao.BloodyGarden.structures.Thread newThread(String group_id, String message, boolean shout)
-			throws MalformedURLException, URISyntaxException, IOException {
+			throws URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -451,7 +451,7 @@ public class LobiServices {
 	}
 
 	public void reply(String group_id, String thread_id, String message)
-			throws MalformedURLException, URISyntaxException, IOException {
+			throws URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -465,7 +465,7 @@ public class LobiServices {
 	}
 
 	// Original name is "RemoveGroup"
-	public void deleteGroup(String group_id) throws MalformedURLException, URISyntaxException, IOException {
+	public void deleteGroup(String group_id) throws URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -480,7 +480,7 @@ public class LobiServices {
 
 	// Original name is "MakePrivateThread"
 	public MakePrivateGroupResult newPrivateThread(String user_id)
-			throws JsonSyntaxException, MalformedURLException, URISyntaxException, IOException {
+			throws JsonSyntaxException, URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -495,7 +495,7 @@ public class LobiServices {
 	}
 
 	public void changeProfile(String name, String description)
-			throws MalformedURLException, URISyntaxException, IOException {
+			throws URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -508,7 +508,7 @@ public class LobiServices {
 	}
 
 	public MakePublicGroupResult newPublicGroup(String name, String desc, String game)
-			throws MalformedURLException, URISyntaxException, IOException {
+			throws URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -529,7 +529,7 @@ public class LobiServices {
 	}
 
 	public GameSearchResult searchGame(String keyword, int page)
-			throws JsonSyntaxException, MalformedURLException, IOException, URISyntaxException {
+			throws JsonSyntaxException, IOException, URISyntaxException {
 		GetHeader header = new GetHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -542,7 +542,7 @@ public class LobiServices {
 				GameSearchResult.class);
 	}
 
-	public boolean deleteAccount() throws MalformedURLException, URISyntaxException, IOException {
+	public boolean deleteAccount() throws URISyntaxException, IOException {
 		PostHeader header = new PostHeader()
 				.setHost("web.lobi.co")
 				.setConnection(true)
@@ -605,7 +605,7 @@ public class LobiServices {
 	}
 
 	public static boolean makeNewAccount(String mail, String password)
-			throws MalformedURLException, IOException, URISyntaxException {
+			throws IOException, URISyntaxException {
 		GetHeader header1 = new GetHeader()
 				.setHost("lobi.co")
 				.setConnection(true)
@@ -629,6 +629,6 @@ public class LobiServices {
 				.setReferer("https://lobi.co/inapp/signup/password");
 
 		String result = Http.post_x_www_form_urlencoded("https://lobi.co/inapp/signup/password", post_data, header2);
-		return result.indexOf("仮登録完了") == -1 | !hasLoginFields(Jsoup.parse(result));
+		return result.contains("仮登録完了") | !hasLoginFields(Jsoup.parse(result));
 	}
 }
