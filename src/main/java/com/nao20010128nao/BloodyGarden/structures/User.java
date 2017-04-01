@@ -9,8 +9,11 @@ public class User {
 	public Integer _default;
 	public String description;
 	public String icon;
+	@Deprecated
 	public String lat;
+	@Deprecated
 	public String lng;
+	@Deprecated
 	public String located_date;
 	public String name;
 	public Integer premium;
